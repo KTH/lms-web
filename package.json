@@ -1,0 +1,19 @@
+{
+  "name": "lms-web",
+  "version": "1.0.0",
+  "description": "Public information taken from Canvas shown as webs",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/KTH/lms-web.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/KTH/lms-web/issues"
+  },
+  "homepage": "https://github.com/KTH/lms-web#readme"
+}
