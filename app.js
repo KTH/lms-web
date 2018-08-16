@@ -23,7 +23,8 @@ server.get(prefix, async (req, res) => {
   const courses = await getPublicCourses()
   res.render('home', {
     courses,
-    prefix
+    prefix,
+    canvas_root: process.env.CANVAS_ROOT
   })
 })
 

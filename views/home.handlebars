@@ -2,18 +2,22 @@
   <h1>Public courses in Canvas</h1>
   <div class="lead">These are the Ladok courses published with "visibility" set to "public" by the teacher(s) and are accessible to everyone. No account is needed to view the contents of the course. Please note that this only grants access to view to view course contents. Only registrered students can recieve credits for the course.</div>
 </div>
-<table>
+<table class="table table-hover">
   <thead>
     <tr>
       <th>Course name</th>
-      <th>School</th>
+      <th>Course code</th>
     </tr>
   </thead>
   <tbody>
     {{#each courses}}
     <tr>
-      <td>{{name}}</td>
-      <td>{{school}}</td>
+      <td>
+        <a href="{{@root.canvas_root}}/courses/{{id}}" target="_blank">
+          {{name}}
+        </a>
+      </td>
+      <td>{{course_code}}</td>
     </tr>
     {{/each}}
   </tbody>
