@@ -1,1 +1,20 @@
-<h1>Example App: Home</h1>
+<div class="pre-article-paragraphs">
+  <h1>Public courses in Canvas</h1>
+  <div class="lead">These are the Ladok courses published with "visibility" set to "public" by the teacher(s) and are accessible to everyone. No account is needed to view the contents of the course. Please note that this only grants access to view to view course contents. Only registrered students can recieve credits for the course.</div>
+</div>
+<table>
+  <thead>
+    <tr>
+      <th>Course name</th>
+      <th>School</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each courses}}
+    <tr>
+      <td>{{title}}</td>
+      <td>{{school}}</td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
