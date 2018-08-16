@@ -21,9 +21,12 @@
   "dependencies": {
     "bootstrap": "^4.1.3",
     "bunyan": "^1.8.12",
+    "dotenv": "^6.0.0",
     "express-handlebars": "^3.0.0",
     "kth-node-server": "^3.1.1",
-    "kth-style": "^3.0.0-beta.9"
+    "kth-style": "^3.0.0-beta.9",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2"
   },
   "devDependencies": {
     "nodemon": "^1.18.3",

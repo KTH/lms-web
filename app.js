@@ -1,8 +1,10 @@
+require('dotenv').config()
 const path = require('path')
 const express = require('express')
 const server = require('kth-node-server')
 const bunyan = require('bunyan')
 const exphbs  = require('express-handlebars')
+const getPublicCourses = require('./server/publicCourses')
 
 const prefix = process.env.PROXY_PREFIX_PATH || ''
 
@@ -17,11 +19,10 @@ server.set('view engine', 'handlebars')
 // If you need more routes, replace the following line with a separate Express
 // Router object
 server.use(prefix + '/kth-style', express.static(path.join(__dirname, 'node_modules/kth-style/build')))
-server.get(prefix, (req, res) => {
+server.get(prefix, async (req, res) => {
+  const courses = await getPublicCourses()
   res.render('home', {
-    courses: [
-      {title: 'Example course', school: 'example school'}
-    ],
+    courses,
     prefix
   })
 })
