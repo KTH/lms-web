@@ -20,12 +20,19 @@ server.set('view engine', 'handlebars')
 // Router object
 server.use(prefix + '/kth-style', express.static(path.join(__dirname, 'node_modules/kth-style/build')))
 server.get(prefix, async (req, res) => {
-  const courses = await getPublicCourses()
-  res.render('home', {
-    courses,
-    prefix,
-    canvas_root: process.env.CANVAS_ROOT
-  })
+  try {
+    logger.info('Getting courses...')
+    const courses = await getPublicCourses()
+    logger.info('Rendering courses...')
+    res.render('home', {
+      courses,
+      prefix,
+      layout: req.query.view === 'embed' ? 'embed' : 'main',
+      canvas_root: process.env.CANVAS_ROOT
+    })
+  } catch (e) {
+    res.render('home', {courses: []})
+  }
 })
 
 server.start({
