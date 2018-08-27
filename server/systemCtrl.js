@@ -11,11 +11,10 @@ const log = require('bunyan').createLogger({
 })
 
 async function checkApi () {
-  const t = await rp({
+  return rp({
     method: 'GET',
     uri: `${process.env.LMS_API_ROOT}/_monitor`,
   })
-  return {'ok': true, msg: 'lms api works'}
 }
 
 /**
@@ -26,11 +25,11 @@ async function getMonitor (req, res) {
   try {
     log.debug('Start preparing monitor')
 
-    const status = await checkApi()
-    log.info('Done collecting monitor results', status.ok)
+    await checkApi()
+    log.info('Done collecting monitor results: OK')
     res.type('text')
       .status(200)
-      .send(`APPLICATION_STATUS: ${status.ok ? 'OK' : 'ERROR'} ${status.msg}`)
+      .send(`APPLICATION_STATUS: OK.`)
   } catch (err) {
     log.error('Failed to display status page:', err)
     res.type('text').status(500).send('APPLICATION_STATUS ERROR\n')
