@@ -39,5 +39,5 @@ server.get(prefix, async (req, res) => {
 
 server.start({
   logger,
-  port: process.env.SERVER_PORT || process.env.PORT || 3000
+  port: process.env.SERVER_PORT || process.env.PORT || 3001
 })
