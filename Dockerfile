@@ -20,6 +20,9 @@ COPY ["app.js", "app.js"]
 COPY ["server", "server"]
 COPY ["views", "views"]
 
+# Copy again package.json, used by server/systemCtrl.js
+COPY ["package.json", "package.json"]
+
 ENV NODE_PATH /application
 
 EXPOSE 3001
