@@ -29,7 +29,7 @@ async function getMonitor (req, res) {
     log.info('Done collecting monitor results: OK')
     res.type('text')
       .status(200)
-      .send(`APPLICATION_STATUS: OK.`)
+      .send(`APPLICATION_STATUS: OK`)
   } catch (err) {
     log.error('Failed to display status page:', err)
     res.type('text').status(500).send('APPLICATION_STATUS ERROR\n')
