@@ -18,6 +18,7 @@ RUN cp -a /npm/node_modules /application && \
 # Copy source files
 COPY ["app.js", "app.js"]
 COPY ["server", "server"]
+COPY ["config", "config"]
 COPY ["views", "views"]
 
 # Copy again package.json, used by server/systemCtrl.js
