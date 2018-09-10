@@ -4,10 +4,12 @@
 
 const express = require('express')
 const rp = require('request-promise')
+const packageFile = require('../package.json')
+const version = require('../config/version')
 const router = express.Router()
 const log = require('bunyan').createLogger({
   name: 'lms-web-logger',
-  app: require('../package.json').name
+  app: packageFile.name
 })
 
 async function checkApi () {
@@ -37,6 +39,26 @@ async function getMonitor (req, res) {
   }
 }
 
+/**
+ * GET /_about
+ * About page
+ */
+async function about (req, res) {
+  res.setHeader('Content-Type', 'text/plain')
+  res.send(`
+    packageFile.name:${packageFile.name}
+    packageFile.name:${packageFile.name}
+    packageFile.version:${packageFile.version}
+    packageFile.description:${packageFile.description}
+    version.gitBranch:${version.gitBranch}
+    version.gitCommit:${version.gitCommit}
+    version.jenkinsBuild:${version.jenkinsBuild}
+    version.dockerName:${version.dockerName}
+    version.dockerVersion:${version.dockerVersion}
+    version.jenkinsBuildDate:${version.jenkinsBuildDate}`)
+}
+
+router.get('/_about', about)
 router.get('/_monitor', getMonitor)
 router.get('/_monitor_core', (req, res) => {
   res.setHeader('Content-Type', 'text/plain')
