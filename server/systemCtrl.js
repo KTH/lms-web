@@ -13,6 +13,7 @@ const log = require('bunyan').createLogger({
 })
 
 async function checkApi () {
+  throw new Error()
   return rp({
     method: 'GET',
     uri: `${process.env.LMS_API_ROOT}/_monitor`,
