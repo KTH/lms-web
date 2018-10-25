@@ -1,6 +1,7 @@
-FROM kthse/kth-nodejs-api:2.4
+FROM kthse/kth-nodejs:9.11.0
 
 COPY ["config", "config"]
+
 COPY ["package.json", "package.json"]
 COPY ["package-lock.json", "package-lock.json"]
 
