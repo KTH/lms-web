@@ -3,7 +3,7 @@ const path = require('path')
 const express = require('express')
 const server = require('kth-node-server')
 const bunyan = require('bunyan')
-const exphbs  = require('express-handlebars')
+const exphbs = require('express-handlebars')
 const getPublicCourses = require('./server/publicCourses')
 const systemCtrl = require('./server/systemCtrl')
 
