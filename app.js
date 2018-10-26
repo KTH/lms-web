@@ -46,11 +46,8 @@ server.get(prefix, async (req, res) => {
       helpers: {
         parseSchool: (id) => schoolMap.get(id) || 'KTH',
         parseTerm: (sisId) => {
-          let parsedTerm = sisId.substring(sisId.length - 5)
-          if (!parsedTerm.startsWith('VT') && !parsedTerm.startsWith('HT')) {
-            parsedTerm = 'N/A'
-          }
-          return parsedTerm
+          let regex = /HT\d{2}|VT\d{2}/
+          return regex.exec(sisId) || 'N/A'
         }
       }
     })
