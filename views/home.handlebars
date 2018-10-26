@@ -2,7 +2,10 @@
   <thead>
     <tr>
       <th>Course name</th>
+      <th>School</th>
       <th>Course code</th>
+      <th>Term</th>
+      <th>Visibility</th>
     </tr>
   </thead>
   <tbody>
@@ -13,7 +16,16 @@
           {{name}}
         </a>
       </td>
+      <td>{{parseSchool account_id}}</td>
       <td>{{course_code}}</td>
+      <td>{{parseTerm sis_course_id}}</td>
+      <td>
+        {{#if is_public}}
+          Public
+        {{else}}
+          Institution
+        {{/if}}
+      </td>
     </tr>
     {{/each}}
   </tbody>

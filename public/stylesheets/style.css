@@ -1,0 +1,10 @@
+/* Set the body to not have any margins. */
+.embedded {
+    margin: 0rem;
+}
+
+/* Set the table to have no margins and a white background color. */
+.table {
+    margin: 0rem;
+    background-color: #fff;
+}
