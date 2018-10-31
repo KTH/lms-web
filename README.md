@@ -18,6 +18,7 @@ You need two environmental variables:
 
 - `LMS_API_ROOT`: endpoint where an instance of [lms-api] is deployed. (e.g. `https://api.kth.se/api/lms-api/`)
 - `CANVAS_ROOT`: endpoint where [Canvas] is deployed (e.g. `https://kth.instructure.com/`)
+- `NODE_ENV`: set to `development` or `production` based on the correct context of deployment
 
 Optionally you can set an `.env` file with those variables and put it in the root directory of the project. They will be read on startup.
 
@@ -40,6 +41,8 @@ It will start a web server in the port 3001. Go to http://localhost:3001/app/lms
 The app exposes a single endpoint, `/`. It fetches the courses from [lms-api], and renders only the public ones using a [handlebars] template.
 
 The app generates links to the courses in Canvas
+
+To receive a version of the course-list suitable for being embedded, supply the query string `view=embed`.
 
 ## More configuration
 

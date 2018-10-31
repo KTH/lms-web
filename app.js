@@ -3,16 +3,26 @@ const path = require('path')
 const express = require('express')
 const server = require('kth-node-server')
 const bunyan = require('bunyan')
-const exphbs  = require('express-handlebars')
+const exphbs = require('express-handlebars')
 const getPublicCourses = require('./server/publicCourses')
 const systemCtrl = require('./server/systemCtrl')
-
 const prefix = process.env.PROXY_PREFIX_PATH || '/app/lms-web'
-
 const logger = bunyan.createLogger({
   name: 'lms-export-logger',
   app: require('./package.json').name
 })
+const schoolMap = new Map([
+  [14, 'ABE'],
+  [17, 'CBH'],
+  [22, 'CBH'],
+  [23, 'EECS'],
+  [24, 'ITM'],
+  [25, 'EECS'],
+  [26, 'EECS'],
+  [27, 'ITM'],
+  [28, 'SCI'],
+  [29, 'CBH']
+])
 
 server.engine('handlebars', exphbs({defaultLayout: 'main'}))
 server.set('view engine', 'handlebars')
@@ -21,6 +31,8 @@ server.set('view engine', 'handlebars')
 // Router object
 server.use(prefix + '/kth-style', express.static(path.join(__dirname, 'node_modules/kth-style/build')))
 server.use(prefix, systemCtrl)
+server.use(prefix + '/static', express.static(path.join(__dirname, 'public')))
+
 server.get(prefix, async (req, res) => {
   try {
     logger.info('Getting courses...')
@@ -30,7 +42,14 @@ server.get(prefix, async (req, res) => {
       courses,
       prefix,
       layout: req.query.view === 'embed' ? 'embed' : 'main',
-      canvas_root: process.env.CANVAS_ROOT
+      canvas_root: process.env.CANVAS_ROOT,
+      helpers: {
+        parseSchool: (id) => schoolMap.get(id) || 'KTH',
+        parseTerm: (sisId) => {
+          let regex = /HT\d{2}|VT\d{2}/
+          return regex.exec(sisId) || 'N/A'
+        }
+      }
     })
   } catch (e) {
     res.render('home', {courses: []})

@@ -15,7 +15,7 @@ const log = require('bunyan').createLogger({
 async function checkApi () {
   return rp({
     method: 'GET',
-    uri: `${process.env.LMS_API_ROOT}/_monitor`,
+    uri: `${process.env.LMS_API_ROOT}/_monitor`
   })
 }
 
