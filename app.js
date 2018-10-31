@@ -31,7 +31,7 @@ server.set('view engine', 'handlebars')
 // Router object
 server.use(prefix + '/kth-style', express.static(path.join(__dirname, 'node_modules/kth-style/build')))
 server.use(prefix, systemCtrl)
-server.use('/static', express.static(path.join(__dirname, 'public')))
+server.use(prefix + '/static', express.static(path.join(__dirname, 'public')))
 
 server.get(prefix, async (req, res) => {
   try {
