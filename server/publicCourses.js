@@ -8,6 +8,6 @@ module.exports = async function () {
   })
 
   return Object.values(courses)
-    .filter(c => c.workflow_state === 'available' &&
-    (c.is_public || c.is_public_to_auth_users))
+    .filter(c => c.workflow_state === 'available')
+    .filter(c => c.is_public || c.is_public_to_auth_users)
 }
