@@ -11,6 +11,7 @@ COPY ["app.js", "app.js"]
 # Source directories
 COPY ["server", "server"]
 COPY ["views", "views"]
+COPY ["public", "public"]
 
 RUN npm install --production --no-optional
 EXPOSE 3001
