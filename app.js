@@ -5,26 +5,18 @@ const server = require('kth-node-server')
 const bunyan = require('bunyan')
 const exphbs = require('express-handlebars')
 const getPublicCourses = require('./server/publicCourses')
+const helpers = require('./server/helpers')
 const systemCtrl = require('./server/systemCtrl')
 const prefix = process.env.PROXY_PREFIX_PATH || '/app/lms-web'
 const logger = bunyan.createLogger({
   name: 'lms-export-logger',
   app: require('./package.json').name
 })
-const schoolMap = new Map([
-  [14, 'ABE'],
-  [17, 'CBH'],
-  [22, 'CBH'],
-  [23, 'EECS'],
-  [24, 'ITM'],
-  [25, 'EECS'],
-  [26, 'EECS'],
-  [27, 'ITM'],
-  [28, 'SCI'],
-  [29, 'CBH']
-])
 
-server.engine('handlebars', exphbs({defaultLayout: 'main'}))
+server.engine('handlebars', exphbs({
+  defaultLayout: 'main',
+  helpers: helpers
+}))
 server.set('view engine', 'handlebars')
 
 // If you need more routes, replace the following line with a separate Express
@@ -42,14 +34,7 @@ server.get(prefix, async (req, res) => {
       courses,
       prefix,
       layout: req.query.view === 'embed' ? 'embed' : 'main',
-      canvas_root: process.env.CANVAS_ROOT,
-      helpers: {
-        parseSchool: (id) => schoolMap.get(id) || 'KTH',
-        parseTerm: (sisId) => {
-          let regex = /HT\d{2}|VT\d{2}/
-          return regex.exec(sisId) || 'N/A'
-        }
-      }
+      canvas_root: process.env.CANVAS_ROOT
     })
   } catch (e) {
     res.render('home', {courses: []})
