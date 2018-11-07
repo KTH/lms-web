@@ -5,9 +5,9 @@ function latestTermFirstSort (a, b) {
   let aTerm = helpers.parseTerm(a.sis_course_id)
   let bTerm = helpers.parseTerm(b.sis_course_id)
   if (aTerm === helpers.NOTERM) {
-    return -1
-  } else if (bTerm === helpers.NOTERM) {
     return 1
+  } else if (bTerm === helpers.NOTERM) {
+    return -1
   } else {
     let aTermSeason = aTerm.slice(0, 2)
     let bTermSeason = bTerm.slice(0, 2)
