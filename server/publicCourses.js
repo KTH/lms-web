@@ -9,14 +9,14 @@ function latestTermFirstSort (a, b) {
   } else if (bTerm === helpers.NOTERM) {
     return -1
   } else {
-    let aTermSeason = aTerm.slice(0, 2)
-    let bTermSeason = bTerm.slice(0, 2)
+    let aTermSeason = aTerm.slice(0, 2) === 'VT' ? 0 : 1
+    let bTermSeason = bTerm.slice(0, 2) === 'VT' ? 0 : 1
     let aTermYear = parseInt(aTerm.slice(2))
     let bTermYear = parseInt(bTerm.slice(2))
     if (aTermYear !== bTermYear) {
       return bTermYear - aTermYear
     } else {
-      return aTermSeason - bTermSeason
+      return bTermSeason - aTermSeason
     }
   }
 }
