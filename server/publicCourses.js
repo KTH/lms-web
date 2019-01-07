@@ -103,10 +103,10 @@ function getHtmlFromCourse (course) {
       <td>
         <a href="https://kth.instructure.com/courses/${course.id}">${course.name}</a>
       </td>
-      <td>${parseSchool(course.account)}</td>
+      <td>${course.school}</td>
       <td>${course.course_code}</td>
-      <td>${parseTerm(course.sis_course_id)}</td>
-      <td>${course.is_public ? 'Public' : 'KTH'}</td>
+      <td>${course.term}</td>
+      <td>${course.visibility}</td>
     </tr>
   `
 }
@@ -128,11 +128,12 @@ function getHtml4 (embed = false) {
 }
 
 function latestTermFirstSort (a, b) {
-  let aTerm = parseTerm(a.sis_course_id)
-  let bTerm = parseTerm(b.sis_course_id)
-  if (aTerm === helpers.NOTERM) {
+  let aTerm = a.term
+  let bTerm = b.term
+
+  if (aTerm === NOTERM) {
     return 1
-  } else if (bTerm === helpers.NOTERM) {
+  } else if (bTerm === NOTERM) {
     return -1
   } else {
     let aTermSeason = aTerm.slice(0, 2) === 'VT' ? 0 : 1
@@ -148,6 +149,15 @@ function latestTermFirstSort (a, b) {
 }
 
 async function getCourses () {
+  const format = course => ({
+    id: course.id,
+    name: course.name,
+    school: parseSchool(course.account),
+    course_code: course.course_code,
+    term: parseTerm(course.sis_course_id),
+    visibility: course.is_public ? 'Public' : 'KTH'
+  })
+
   if (!cache) {
     cache = renewCache()
   }
@@ -157,6 +167,7 @@ async function getCourses () {
   return courses
     .filter(c => c.workflow_state === 'available')
     .filter(c => c.is_public || c.is_public_to_auth_users)
+    .map(format)
     .sort(latestTermFirstSort)
 }
 
