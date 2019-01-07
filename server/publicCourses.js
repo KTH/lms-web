@@ -1,10 +1,34 @@
 const rp = require('request-promise')
-const helpers = require('./helpers')
 const prefix = process.env.PROXY_PREFIX_PATH || '/app/lms-web'
 const CanvasApi = require('kth-canvas-api')
 const canvasApi = new CanvasApi(process.env.CANVAS_API_URL, process.env.CANVAS_API_KEY)
 
 let cache
+
+const SCHOOLMAP = new Map([
+  [14, 'ABE'],
+  [17, 'CBH'],
+  [22, 'CBH'],
+  [23, 'EECS'],
+  [24, 'ITM'],
+  [25, 'EECS'],
+  [26, 'EECS'],
+  [27, 'ITM'],
+  [28, 'SCI'],
+  [29, 'CBH']
+])
+
+const NOTERM = 'N/A'
+
+function parseSchool (id) {
+  return SCHOOLMAP.get(id) || 'KTH'
+}
+
+function parseTerm (sisId) {
+  const regex = /HT\d{2}|VT\d{2}/
+  const regexMatches = regex.exec(sisId) || [false]
+  return regexMatches[0] || NOTERM
+}
 
 async function renewCache() {
   try {
@@ -79,9 +103,9 @@ function getHtmlFromCourse (course) {
       <td>
         <a href="https://kth.instructure.com/courses/${course.id}">${course.name}</a>
       </td>
-      <td>${helpers.parseSchool(course.account)}</td>
+      <td>${parseSchool(course.account)}</td>
       <td>${course.course_code}</td>
-      <td>${helpers.parseTerm(course.sis_course_id)}</td>
+      <td>${parseTerm(course.sis_course_id)}</td>
       <td>${course.is_public ? 'Public' : 'KTH'}</td>
     </tr>
   `
@@ -104,8 +128,8 @@ function getHtml4 (embed = false) {
 }
 
 function latestTermFirstSort (a, b) {
-  let aTerm = helpers.parseTerm(a.sis_course_id)
-  let bTerm = helpers.parseTerm(b.sis_course_id)
+  let aTerm = parseTerm(a.sis_course_id)
+  let bTerm = parseTerm(b.sis_course_id)
   if (aTerm === helpers.NOTERM) {
     return 1
   } else if (bTerm === helpers.NOTERM) {
