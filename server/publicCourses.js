@@ -1,7 +1,26 @@
 const rp = require('request-promise')
 const helpers = require('./helpers')
 const prefix = process.env.PROXY_PREFIX_PATH || '/app/lms-web'
+const CanvasApi = require('kth-canvas-api')
+const canvasApi = new CanvasApi(process.env.CANVAS_API_URL, process.env.CANVAS_API_KEY)
 
+let cache
+
+async function renewCache() {
+  try {
+    const courses = (await canvasApi.listCourses())
+      .filter(course => course.sis_course_id)
+
+    return courses
+  } catch (e) {}
+}
+
+function start() {
+  const FIFTEEN_MINUTES = 1000 * 60 * 15
+
+  setInterval(() => { cache = renewCache() }, FIFTEEN_MINUTES)
+  cache = renewCache()
+}
 
 function getHtmlHeader() {
   return `
@@ -34,7 +53,6 @@ function getHtml1 (embed = false) {
         ${embed ? '' : '<hr class="header-hr">'}
         <div class="loading-bar">
           <div class="bar1"></div>
-          <div class="bar2"></div>
         </div>
   `
 }
@@ -64,7 +82,7 @@ function getHtmlFromCourse (course) {
       <td>${helpers.parseSchool(course.account)}</td>
       <td>${course.course_code}</td>
       <td>${helpers.parseTerm(course.sis_course_id)}</td>
-      <td>xxx</td>
+      <td>${course.is_public ? 'Public' : 'KTH'}</td>
     </tr>
   `
 }
@@ -106,17 +124,19 @@ function latestTermFirstSort (a, b) {
 }
 
 async function getCourses () {
-  const courses = await rp({
-    method: 'GET',
-    uri: `${process.env.LMS_API_ROOT}/api/courses`,
-    json: true
-  })
+  if (!cache) {
+    cache = renewCache()
+  }
 
-  return Object.values(courses)
+  const courses = await cache
+
+  return courses
     .filter(c => c.workflow_state === 'available')
     .filter(c => c.is_public || c.is_public_to_auth_users)
     .sort(latestTermFirstSort)
 }
+
+start()
 
 module.exports = {
   getHtml1,

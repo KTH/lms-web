@@ -26,8 +26,8 @@
 .bar1 {
   position: absolute;
   top: 0;
-  background: #f00;
-  animation: progress 60s 1 cubic-bezier(0.01, 0.97, 0.01, 0.97);
+  background: #006cb7;
+  animation: progress 120s 1 cubic-bezier(0.01, 0.97, 0.01, 0.97);
   height: 100%;
 }
 
@@ -44,32 +44,5 @@
 }
 
 .loading-bar.complete .bar1 {
-  animation: progress-end 1s ease-out 0s 1 normal forwards;
-}
-
-
-.bar2 {
-  position: absolute;
-  top: 0;
-  background: #f00;
-  width: 0%;
-  height: 100%;
-}
-
-@keyframes progress-end2 {
-  0% {
-    width: 50%;
-  }
-  50% {
-    width: 100%;
-    opacity: 1;
-  }
-  100% {
-    width: 100%;
-    opacity: 0;
-  }
-}
-
-.loading-bar.complete .bar2 {
-  animation: progress-end2 1s ease-out 0s 1 normal forwards;
+  display: none;
 }
