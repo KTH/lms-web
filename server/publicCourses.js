@@ -5,31 +5,6 @@ const canvasApi = new CanvasApi(process.env.CANVAS_API_URL, process.env.CANVAS_A
 
 let cache
 
-const SCHOOLMAP = new Map([
-  [14, 'ABE'],
-  [17, 'CBH'],
-  [22, 'CBH'],
-  [23, 'EECS'],
-  [24, 'ITM'],
-  [25, 'EECS'],
-  [26, 'EECS'],
-  [27, 'ITM'],
-  [28, 'SCI'],
-  [29, 'CBH']
-])
-
-const NOTERM = 'N/A'
-
-function parseSchool (id) {
-  return SCHOOLMAP.get(id) || 'KTH'
-}
-
-function parseTerm (sisId) {
-  const regex = /HT\d{2}|VT\d{2}/
-  const regexMatches = regex.exec(sisId) || [false]
-  return regexMatches[0] || NOTERM
-}
-
 async function renewCache() {
   try {
     const courses = (await canvasApi.listCourses())
@@ -127,28 +102,32 @@ function getHtml4 (embed = false) {
   `
 }
 
-function latestTermFirstSort (a, b) {
-  let aTerm = a.term
-  let bTerm = b.term
-
-  if (aTerm === NOTERM) {
-    return 1
-  } else if (bTerm === NOTERM) {
-    return -1
-  } else {
-    let aTermSeason = aTerm.slice(0, 2) === 'VT' ? 0 : 1
-    let bTermSeason = bTerm.slice(0, 2) === 'VT' ? 0 : 1
-    let aTermYear = parseInt(aTerm.slice(2))
-    let bTermYear = parseInt(bTerm.slice(2))
-    if (aTermYear !== bTermYear) {
-      return bTermYear - aTermYear
-    } else {
-      return bTermSeason - aTermSeason
-    }
-  }
-}
-
 async function getCourses () {
+  const schools = new Map([
+    [14, 'ABE'],
+    [17, 'CBH'],
+    [22, 'CBH'],
+    [23, 'EECS'],
+    [24, 'ITM'],
+    [25, 'EECS'],
+    [26, 'EECS'],
+    [27, 'ITM'],
+    [28, 'SCI'],
+    [29, 'CBH']
+  ])
+
+  const NOTERM = 'N/A'
+
+  function parseSchool (id) {
+    return schools.get(id) || 'KTH'
+  }
+
+  function parseTerm (sisId) {
+    const regex = /HT\d{2}|VT\d{2}/
+    const regexMatches = regex.exec(sisId) || [false]
+    return regexMatches[0] || NOTERM
+  }
+
   const format = course => ({
     id: course.id,
     name: course.name,
@@ -157,6 +136,25 @@ async function getCourses () {
     term: parseTerm(course.sis_course_id),
     visibility: course.is_public ? 'Public' : 'KTH'
   })
+
+
+  function latestTermFirstSort (a, b) {
+    if (a.term === NOTERM) {
+      return 1
+    } else if (b.term === NOTERM) {
+      return -1
+    } else {
+      let aTermSeason = a.term.slice(0, 2) === 'VT' ? 0 : 1
+      let bTermSeason = b.term.slice(0, 2) === 'VT' ? 0 : 1
+      let aTermYear = parseInt(a.term.slice(2))
+      let bTermYear = parseInt(b.term.slice(2))
+      if (aTermYear !== bTermYear) {
+        return bTermYear - aTermYear
+      } else {
+        return bTermSeason - aTermSeason
+      }
+    }
+  }
 
   if (!cache) {
     cache = renewCache()
