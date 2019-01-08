@@ -15,7 +15,7 @@ async function renewCache() {
 }
 
 function start() {
-  const SIS_HOURS = 1000 * 3600 * 6
+  const SIX_HOURS = 1000 * 3600 * 6
 
   setInterval(() => { cache = renewCache() }, SIX_HOURS)
   cache = renewCache()
