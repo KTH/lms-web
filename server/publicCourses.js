@@ -5,7 +5,7 @@ const canvasApi = new CanvasApi(process.env.CANVAS_ROOT + '/api/v1', process.env
 
 let cache
 
-async function renewCache() {
+async function fetchCourses() {
   try {
     const courses = (await canvasApi.listCourses())
       .filter(course => course.sis_course_id)
@@ -17,8 +17,8 @@ async function renewCache() {
 function start() {
   const SIX_HOURS = 1000 * 3600 * 6
 
-  setInterval(() => { cache = renewCache() }, SIX_HOURS)
-  cache = renewCache()
+  setInterval(() => { cache = fetchCourses() }, SIX_HOURS)
+  cache = fetchCourses()
 }
 
 function getHtmlHeader() {
@@ -157,7 +157,7 @@ async function getCourses () {
   }
 
   if (!cache) {
-    cache = renewCache()
+    cache = fetchCourses()
   }
 
   const courses = await cache
