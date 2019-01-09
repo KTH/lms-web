@@ -1,6 +1,7 @@
 /**
  * Routes for System Control (monitor, etc…)
  */
+const rp = require('request-promise')
 const stripIndent = require('common-tags/lib/stripIndent')
 const express = require('express')
 const packageFile = require('../package.json')
@@ -26,7 +27,7 @@ async function checkCanvasKey () {
 async function checkCanvasStatus () {
   try {
     const canvasStatus = await rp({
-      url: 'http://nlxv32btr6v7.statuspage.io/api/v2/status.json',
+      url: 'https://nlxv32btr6v7.statuspage.io/api/v2/status.json',
       json: true
     })
     return canvasStatus.status.indicator === 'none'
