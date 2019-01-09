@@ -1,3 +1,7 @@
+const logger = require('bunyan').createLogger({
+  name: 'lms-web',
+  app: require('../package.json').name
+})
 const rp = require('request-promise')
 const prefix = process.env.PROXY_PREFIX_PATH || '/app/lms-web'
 const CanvasApi = require('kth-canvas-api')
@@ -11,7 +15,9 @@ async function fetchCourses() {
       .filter(course => course.sis_course_id)
 
     return courses
-  } catch (e) {}
+  } catch (e) {
+    logger.error(e, 'Could not fetch courses from Canvas')
+  }
 }
 
 function start() {

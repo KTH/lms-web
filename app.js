@@ -8,7 +8,7 @@ const publicCourses = require('./server/publicCourses')
 const systemCtrl = require('./server/systemCtrl')
 const prefix = process.env.PROXY_PREFIX_PATH || '/app/lms-web'
 const logger = bunyan.createLogger({
-  name: 'lms-export-logger',
+  name: 'lms-web',
   app: require('./package.json').name
 })
 
