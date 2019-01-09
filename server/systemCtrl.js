@@ -2,7 +2,6 @@
  * Routes for System Control (monitor, etc…)
  */
 const rp = require('request-promise')
-const stripIndent = require('common-tags/lib/stripIndent')
 const express = require('express')
 const packageFile = require('../package.json')
 const version = require('../config/version')
@@ -13,6 +12,13 @@ const log = require('bunyan').createLogger({
 })
 const CanvasApi = require('kth-canvas-api')
 const canvasApi = new CanvasApi(process.env.CANVAS_ROOT + '/api/v1', process.env.CANVAS_API_KEY)
+
+function stripIndent (strings, ...keys) {
+  // First make a single string and then apply the transformation
+  return keys
+    .reduce((acc, value, i) => acc + value + strings[i+1], strings[0])
+    .replace(/^[^\S\n]+/gm, '')
+}
 
 async function checkCanvasKey () {
   try {
