@@ -1,9 +1,8 @@
 /**
  * Routes for System Control (monitor, etc…)
  */
-
-const express = require('express')
 const rp = require('request-promise')
+const express = require('express')
 const packageFile = require('../package.json')
 const version = require('../config/version')
 const router = express.Router()
@@ -11,33 +10,61 @@ const log = require('bunyan').createLogger({
   name: 'lms-web-logger',
   app: packageFile.name
 })
+const CanvasApi = require('kth-canvas-api')
+const canvasApi = new CanvasApi(process.env.CANVAS_ROOT + '/api/v1', process.env.CANVAS_API_KEY)
 
-async function checkApi () {
-  return rp({
-    method: 'GET',
-    uri: `${process.env.LMS_API_ROOT}/_monitor`
-  })
-}
-
-/**
- * GET /_monitor
- * Monitor page
- */
-async function getMonitor (req, res) {
+async function checkCanvasKey () {
   try {
-    log.debug('Start preparing monitor')
-
-    await checkApi()
-    log.info('Done collecting monitor results: OK')
-    res.type('text')
-      .status(200)
-      .send(`APPLICATION_STATUS: OK`)
-  } catch (err) {
-    log.error('Failed to display status page:', err)
-    res.type('text').status(500).send('APPLICATION_STATUS ERROR\n')
+    await canvasApi.getRootAccount()
+    return true
+  } catch (e) {
+    log.info('An error ocurred: ', e)
+    return false
   }
 }
 
+async function checkCanvasStatus () {
+  try {
+    const canvasStatus = await rp({
+      url: 'https://nlxv32btr6v7.statuspage.io/api/v2/status.json',
+      json: true
+    })
+    return canvasStatus.status.indicator === 'none'
+  } catch (e) {
+    log.info('An error occured:', e)
+    return false
+  }
+}
+
+async function _monitor (req, res) {
+  const status = await checkCanvasKey()
+  const statusStr = [
+    `APPLICATION_STATUS: ${status ? 'OK' : 'ERROR'}`,
+    '',
+    `CANVAS_KEY: ${status ? 'OK' : 'ERROR. Token for Canvas is not properly set'}`
+  ].join('\n')
+
+  log.info('Showing _monitor page:', statusStr)
+  res.setHeader('Content-Type', 'text/plain')
+  res.send(statusStr)
+}
+
+async function _monitorAll (req, res) {
+  const canvasStatus = await checkCanvasStatus()
+  const canvasKeyStatus = await checkCanvasKey()
+
+  const statusStr = [
+    `APPLICATION_STATUS: ${canvasStatus && canvasKeyStatus ? 'OK' : 'ERROR'}`,
+    '',
+    `CANVAS_KEY: ${canvasKeyStatus ? 'OK' : 'ERROR. Token for Canvas is not properly set'}`,
+    `CANVAS: ${canvasStatus ? 'OK' : 'ERROR. CANVAS is down'}`
+  ].join('\n')
+
+  log.info('Showing _monitor_all page:', statusStr)
+
+  res.setHeader('Content-Type', 'text/plain')
+  res.send(statusStr)
+}
 /**
  * GET /_about
  * About page
@@ -58,7 +85,8 @@ async function about (req, res) {
 }
 
 router.get('/_about', about)
-router.get('/_monitor', getMonitor)
+router.get('/_monitor', _monitor)
+router.get('/_monitor_all', _monitorAll)
 router.get('/_monitor_core', (req, res) => {
   res.setHeader('Content-Type', 'text/plain')
   res.send(`APPLICATION_STATUS: OK`)

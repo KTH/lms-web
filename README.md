@@ -16,9 +16,8 @@ $ npm install
 
 You need two environmental variables:
 
-- `LMS_API_ROOT`: endpoint where an instance of [lms-api] is deployed. (e.g. `https://api.kth.se/api/lms-api/`)
 - `CANVAS_ROOT`: endpoint where [Canvas] is deployed (e.g. `https://kth.instructure.com/`)
-- `NODE_ENV`: set to `development` or `production` based on the correct context of deployment
+- `CANVAS_API_KEY`: API key to access to Canvas.
 
 Optionally you can set an `.env` file with those variables and put it in the root directory of the project. They will be read on startup.
 
@@ -48,6 +47,7 @@ To receive a version of the course-list suitable for being embedded, supply the 
 
 You can set the following environmental variables to configure more the application:
 
+- `NODE_ENV`: set to `development` or `production` based on the correct context of deployment (default `production`)
 - `PORT` and `PROXY_PREFIX_PATH` (default `3001` and `/app/lms-web` respectively). Start the app in different port and endpoint. Make sure that `PROXY_PREFIX_PATH` hasn't any trailing slashes.
 
 ## Auto-restart the app
