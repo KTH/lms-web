@@ -110,16 +110,19 @@ function getHtml4 (embed = false) {
 
 async function getCourses () {
   const schools = new Map([
-    [14, 'ABE'],
-    [17, 'CBH'],
-    [22, 'CBH'],
-    [23, 'EECS'],
-    [24, 'ITM'],
-    [25, 'EECS'],
-    [26, 'EECS'],
-    [27, 'ITM'],
-    [28, 'SCI'],
-    [29, 'CBH']
+    [14, 'ABE'],  // "ABE" in Canvas
+    [17, 'CBH'],  // "BIO" in Canvas
+    [22, 'CBH'],  // "CHE" in Canvas
+    [23, 'EECS'], // "CSC" in Canvas
+    [24, 'ITM'],  // "ECE" in Canvas
+    [25, 'EECS'], // "EES" in Canvas
+    [26, 'EECS'], // "ICT" in Canvas
+    [27, 'ITM'],  // "ITM" in Canvas
+    [28, 'SCI'],  // "SCI" in Canvas
+    [29, 'CBH'],  // "CHE" in Canvas
+    [59, 'EECS'], // "EECS" in Canvas
+    [63, 'CBH'],  // "CBH" in Canvas
+    [67, 'GVS']   // "GVS" in Canvas
   ])
 
   const NOTERM = 'N/A'
@@ -137,7 +140,7 @@ async function getCourses () {
   const format = course => ({
     id: course.id,
     name: course.name,
-    school: parseSchool(course.account),
+    school: parseSchool(course.account_id),
     course_code: course.course_code,
     term: parseTerm(course.sis_course_id),
     visibility: course.is_public ? 'Public' : 'KTH'
