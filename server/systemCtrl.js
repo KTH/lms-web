@@ -13,13 +13,6 @@ const log = require('bunyan').createLogger({
 const CanvasApi = require('kth-canvas-api')
 const canvasApi = new CanvasApi(process.env.CANVAS_ROOT + '/api/v1', process.env.CANVAS_API_KEY)
 
-function stripIndent (strings, ...keys) {
-  // First make a single string and then apply the transformation
-  return keys
-    .reduce((acc, value, i) => acc + value + strings[i+1], strings[0])
-    .replace(/^[^\S\n]+/gm, '')
-}
-
 async function checkCanvasKey () {
   try {
     await canvasApi.getRootAccount()
@@ -45,11 +38,12 @@ async function checkCanvasStatus () {
 
 async function _monitor (req, res) {
   const status = await checkCanvasKey()
-  const statusStr = stripIndent`
-    APPLICATION_STATUS: ${status ? 'OK' : 'ERROR'}
+  const statusStr = [
+    `APPLICATION_STATUS: ${status ? 'OK' : 'ERROR'}`,
+    '',
+    `CANVAS_KEY: ${status ? 'OK' : 'ERROR. Token for Canvas is not properly set'}`
+  ].join('\n')
 
-    CANVAS_KEY: ${status ? 'OK' : 'ERROR. Token for Canvas is not properly set'}
-  `
   log.info('Showing _monitor page:', statusStr)
   res.setHeader('Content-Type', 'text/plain')
   res.send(statusStr)
@@ -59,12 +53,13 @@ async function _monitorAll (req, res) {
   const canvasStatus = await checkCanvasStatus()
   const canvasKeyStatus = await checkCanvasKey()
 
-  const statusStr = stripIndent`
-    APPLICATION_STATUS: ${canvasStatus && canvasKeyStatus ? 'OK' : 'ERROR'}
+  const statusStr = [
+    `APPLICATION_STATUS: ${canvasStatus && canvasKeyStatus ? 'OK' : 'ERROR'}`,
+    '',
+    `CANVAS_KEY: ${canvasKeyStatus ? 'OK' : 'ERROR. Token for Canvas is not properly set'}`,
+    `CANVAS: ${canvasStatus ? 'OK' : 'ERROR. CANVAS is down'}`
+  ].join('\n')
 
-    CANVAS_KEY: ${canvasKeyStatus ? 'OK' : 'ERROR. Token for Canvas is not properly set'}
-    CANVAS: ${canvasStatus ? 'OK' : 'ERROR. CANVAS is down'}
-  `
   log.info('Showing _monitor_all page:', statusStr)
 
   res.setHeader('Content-Type', 'text/plain')
