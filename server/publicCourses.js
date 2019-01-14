@@ -10,6 +10,9 @@ const canvasApi = new CanvasApi(process.env.CANVAS_ROOT + '/api/v1', process.env
 let cache
 
 async function fetchCourses() {
+  if (process.env.NODE_ENV === 'development' && process.env.USE_FAKE === 'true') {
+    return []
+  }
   try {
     const courses = (await canvasApi.listCourses())
       .filter(course => course.sis_course_id)

@@ -6,7 +6,7 @@
   "scripts": {
     "test": "standard",
     "start": "node app.js",
-    "start-dev": "nodemon app.js",
+    "start-dev": "NODE_ENV=development nodemon app.js",
     "debug": "NODE_ENV=development node --nolazy --inspect-brk=9229 app.js | bunyan -o short"
   },
   "repository": {
