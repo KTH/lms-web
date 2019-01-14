@@ -51,6 +51,9 @@ document.querySelectorAll('.sort').forEach(function(element) {
       sortDirection = 'ASC'
     }
 
+    document.querySelectorAll('.sort').forEach(element => element.className = 'sort')
+    element.className = `sort ${sortDirection === 'ASC' ? 'sort-asc' : 'sort-desc'}`
+
     updateTable()
   }
 
