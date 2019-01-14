@@ -80,11 +80,11 @@ function getHtml2 () {
     <table class="table table-hover">
       <thead>
         <tr>
-          <th>Course name</th>
-          <th>School</th>
-          <th>Course code</th>
-          <th>Term</th>
-          <th>Visibility</th>
+          <th class="sort">Course name</th>
+          <th class="sort">School</th>
+          <th class="sort">Course code</th>
+          <th class="sort">Term</th>
+          <th class="sort">Visibility</th>
         </tr>
       </thead>
       <tbody>
