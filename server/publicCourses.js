@@ -112,10 +112,12 @@ function getHtml3 () {
   `
 }
 
-function getHtml4 (embed = false) {
+function getHtml4 (embed = false, courses = []) {
   return `
         ${embed ? '' : '</div>'}
         <script>document.querySelector('.loading-bar').classList.add('complete')</script>
+        <script>window.courses = ${JSON.stringify(courses)}</script>
+        <script src="${prefix}/static/public-courses.js"></script>
       </body>
     </html>
   `
