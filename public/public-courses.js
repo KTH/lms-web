@@ -10,7 +10,7 @@ function updateTable () {
 
   const termSorter = (field, direction) => (a, b) => {
     const yearA = parseInt(a[field].slice(2), 10)
-    const yearB = parseInt(a[field].slice(2), 10)
+    const yearB = parseInt(b[field].slice(2), 10)
 
     if (isNaN(yearA)) {
       return 1
