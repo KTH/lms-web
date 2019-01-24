@@ -23,6 +23,7 @@ function updateTable () {
 
   const sortFunction = sortField === 'term' ? termSorter : alphabeticSorter
   const html = courses
+    .concat()
     .sort(sortFunction(sortField, sortDirection))
     .map(course => (`
       <tr>
