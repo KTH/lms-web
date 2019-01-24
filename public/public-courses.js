@@ -9,7 +9,16 @@ function updateTable () {
   }
 
   const termSorter = (field, direction) => (a, b) => {
-    const diff = parseInt(a[field].slice(2)) - parseInt(b[field].slice(2))
+    const yearA = parseInt(a[field].slice(2), 10)
+    const yearB = parseInt(a[field].slice(2), 10)
+
+    if (isNaN(yearA)) {
+      return 1
+    } else if (isNaN(yearB)) {
+      return -1
+    }
+
+    const diff = yearA - yearB
 
     if (diff !== 0) {
       return direction === 'ASC' ? diff : -diff
