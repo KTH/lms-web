@@ -10,6 +10,20 @@ const canvasApi = new CanvasApi(process.env.CANVAS_ROOT + '/api/v1', process.env
 let cache
 
 async function fetchCourses() {
+  if (process.env.NODE_ENV === 'development' && process.env.USE_FAKE === 'true') {
+    return [
+      {id: 3, sis_course_id: 'ExampleHT18', account_id: 14, workflow_state: 'available', course_code: 'H', is_public: true, name: 'Example course I HT18'},
+      {id: 3, sis_course_id: 'ExampleVT18', account_id: 14, workflow_state: 'available', course_code: 'B', is_public: true, name: 'Example course II VT18'},
+      {id: 3, sis_course_id: 'ExampleHT18', account_id: 24, workflow_state: 'available', course_code: 'G', is_public: true, name: 'Example course III HT18'},
+      {id: 3, sis_course_id: 'ExampleHT16', account_id: 24, workflow_state: 'available', course_code: 'E', is_public: true, name: 'Example course IV HT16'},
+      {id: 3, sis_course_id: 'Blablablabl', account_id: 67, workflow_state: 'available', course_code: 'C', is_public: true, name: 'Example course nowhere'},
+      {id: 3, sis_course_id: 'ExampleVT17', account_id: 27, workflow_state: 'available', course_code: 'D', is_public: true, name: 'Example course V VT17'},
+      {id: 3, sis_course_id: 'ExampleHT17', account_id: 29, workflow_state: 'available', course_code: 'F', is_public: true, name: 'Example course VI HT18'},
+      {id: 3, sis_course_id: 'ExampleHT18', account_id: 63, workflow_state: 'available', course_code: 'A', is_public: true, name: 'Example course VII HT18'},
+      {id: 3, sis_course_id: 'ExampleHT18', account_id: 67, workflow_state: 'available', course_code: 'C', is_public: true, name: 'Example course VIII HT18'},
+    ]
+  }
+
   try {
     const courses = (await canvasApi.listCourses())
       .filter(course => course.sis_course_id)
@@ -67,14 +81,14 @@ function getHtml2 () {
     <table class="table table-hover">
       <thead>
         <tr>
-          <th>Course name</th>
-          <th>School</th>
-          <th>Course code</th>
-          <th>Term</th>
-          <th>Visibility</th>
+          <th class="sort" data-field="name">Course name</th>
+          <th class="sort" data-field="school">School</th>
+          <th class="sort" data-field="course_code">Course code</th>
+          <th class="sort" data-field="term">Term</th>
+          <th class="sort" data-field="visibility">Visibility</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody id="table-body">
   `
 }
 
@@ -99,10 +113,12 @@ function getHtml3 () {
   `
 }
 
-function getHtml4 (embed = false) {
+function getHtml4 (embed = false, courses = []) {
   return `
         ${embed ? '' : '</div>'}
         <script>document.querySelector('.loading-bar').classList.add('complete')</script>
+        <script>window.courses = ${JSON.stringify(courses)}</script>
+        <script src="${prefix}/static/public-courses.js"></script>
       </body>
     </html>
   `
