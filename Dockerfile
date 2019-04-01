@@ -1,4 +1,4 @@
-FROM kthse/kth-nodejs:9.11.0
+FROM node:10.12-alpine
 
 COPY ["config", "config"]
 
