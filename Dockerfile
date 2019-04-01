@@ -1,4 +1,4 @@
-FROM node:10.12-alpine
+FROM node:10-alpine
 
 COPY ["config", "config"]
 
