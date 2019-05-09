@@ -20,7 +20,6 @@
   },
   "homepage": "https://github.com/KTH/lms-web#readme",
   "dependencies": {
-    "bootstrap": "^4.1.3",
     "bunyan": "^1.8.12",
     "dotenv": "^6.1.0",
     "kth-canvas-api": "^0.15.7",
