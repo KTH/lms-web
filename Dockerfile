@@ -12,6 +12,6 @@ COPY ["app.js", "app.js"]
 COPY ["server", "server"]
 COPY ["public", "public"]
 
-RUN npm install --production --no-optional
+RUN npm ci --production
 EXPOSE 3001
 CMD ["node", "app.js"]
