@@ -2,25 +2,16 @@ pipeline {
     agent any
 
     stages {
-        // Some example code for creating a new process!
-        /*stage('Test') {
-            environment {
-                HOME = '.'
-            }
-            agent {
-                docker { image 'node:10-alpine' }
-            }
+        stage('Cleanup') {
             steps {
-                withCredentials([string(credentialsId: 'CANVAS_API_TOKEN_PROVISIONAL', variable: 'CANVAS_API_KEY')]){
-                    echo "My test HOME: '${HOME}'"
-                    sh 'npm run test:docker-unit'
-                    sh 'npm run test:docker-integration'
-                }
+                sh 'docker network prune -f'
             }
-        }*/
-
+        }
         // These are the commands run in the original Jenkins project
-        stage('Original Process') {
+        stage('Run Evolene') {
+            environment {
+                COMPOSE_PROJECT_NAME = "${env.BUILD_TAG}"
+            }
             steps {
                 sh 'ls $JENKINS_HOME/workspace/zermatt/jenkins/'
                 sh '$JENKINS_HOME/workspace/zermatt/jenkins/buildinfo-to-node-module.sh /config/version.js'
@@ -28,12 +19,11 @@ pipeline {
                 sh 'docker images'
             }
         }
-    }
-
-    // Some more example code which can be extended in the future...
-    /*post {
-        success {
-            echo "SUCCESS!"
+        stage('Dump info') {
+            steps {
+                sh 'docker images'
+                sh 'docker network ls'
+            }
         }
-    }*/
+    }
 }
