@@ -1,4 +1,5 @@
 require('dotenv').config()
+require('@kth/reqvars').check()
 const path = require('path')
 const express = require('express')
 const server = require('kth-node-server')
