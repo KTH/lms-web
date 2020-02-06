@@ -6,6 +6,7 @@ COPY ["package.json", "package.json"]
 COPY ["package-lock.json", "package-lock.json"]
 
 # Source files
+COPY [".env.in", ".env.in"]
 COPY ["app.js", "app.js"]
 
 # Source directories
