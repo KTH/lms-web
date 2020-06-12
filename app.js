@@ -1,4 +1,5 @@
 require('dotenv').config()
+require('@kth/reqvars').check()
 const path = require('path')
 const express = require('express')
 const server = require('kth-node-server')
@@ -11,8 +12,6 @@ const logger = bunyan.createLogger({
   name: 'lms-web',
   app: require('./package.json').name
 })
-
-require('@kth/reqvars').check()
 
 server.use(prefix + '/kth-style', express.static(path.join(__dirname, 'node_modules/kth-style/build')))
 server.use(prefix, systemCtrl)
