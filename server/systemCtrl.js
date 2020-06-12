@@ -6,10 +6,7 @@ const express = require('express')
 const packageFile = require('../package.json')
 const version = require('../config/version')
 const router = express.Router()
-const log = require('bunyan').createLogger({
-  name: 'lms-web-logger',
-  app: packageFile.name
-})
+const log = require('skog')
 const CanvasApi = require('kth-canvas-api')
 const canvasApi = new CanvasApi(process.env.CANVAS_ROOT + '/api/v1', process.env.CANVAS_API_KEY)
 

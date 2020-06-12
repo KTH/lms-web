@@ -1,17 +1,30 @@
-require('dotenv').config()
-require('@kth/reqvars').check()
+const log = require('skog')
+
+require('skog/bunyan').createLogger({
+  app: require('./package.json').name,
+  name: require('./package.json').name,
+  level:
+    process.env.NODE_ENV === 'development'
+      ? 'trace'
+      : process.env.LOG_LEVEL || 'info',
+  serializers: require('bunyan').stdSerializers
+})
+process.on('uncaughtException', err => {
+  log.fatal(err, 'Uncaught Exception thrown')
+  process.exit(1)
+})
+process.on('unhandledRejection', (reason, p) => {
+  throw reason
+})
+require('dotenv-safe').config({ example: '.env.in' })
+
+
 const path = require('path')
 const express = require('express')
 const server = require('kth-node-server')
-const bunyan = require('bunyan')
-
 const publicCourses = require('./server/publicCourses')
 const systemCtrl = require('./server/systemCtrl')
 const prefix = process.env.PROXY_PREFIX_PATH || '/app/lms-web'
-const logger = bunyan.createLogger({
-  name: 'lms-web',
-  app: require('./package.json').name
-})
 
 server.use(prefix + '/kth-style', express.static(path.join(__dirname, 'node_modules/kth-style/build')))
 server.use(prefix, systemCtrl)
@@ -27,11 +40,11 @@ server.get(prefix, async (req, res) => {
   let courses
 
   try {
-    logger.info('Getting courses...')
+    log.info('Getting courses...')
     courses = await publicCourses.getCourses()
     res.write(publicCourses.getHtml2())
 
-    logger.info('Rendering courses...')
+    log.info('Rendering courses...')
     for (let course of courses) {
       res.write(publicCourses.getHtmlFromCourse(course))
     }
@@ -45,6 +58,6 @@ server.get(prefix, async (req, res) => {
 })
 
 server.start({
-  logger,
+  logger: log,
   port: process.env.SERVER_PORT || process.env.PORT || 3001
 })

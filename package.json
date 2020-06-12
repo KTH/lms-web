@@ -20,15 +20,16 @@
   },
   "homepage": "https://github.com/KTH/lms-web#readme",
   "dependencies": {
-    "@kth/reqvars": "^2.0.1",
     "bunyan": "^1.8.12",
     "dotenv": "^6.2.0",
+    "dotenv-safe": "^8.2.0",
     "kth-canvas-api": "^0.15.7",
     "kth-node-server": "^3.1.2",
     "kth-style": "^3.2.19",
     "popper.js": "^1.16.1",
     "request": "^2.88.2",
-    "request-promise": "^4.2.5"
+    "request-promise": "^4.2.5",
+    "skog": "^1.0.0-alpha.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.3",
