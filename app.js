@@ -12,6 +12,8 @@ const logger = bunyan.createLogger({
   app: require('./package.json').name
 })
 
+require('@kth/reqvars').check()
+
 server.use(prefix + '/kth-style', express.static(path.join(__dirname, 'node_modules/kth-style/build')))
 server.use(prefix, systemCtrl)
 server.use(prefix + '/static', express.static(path.join(__dirname, 'public')))
