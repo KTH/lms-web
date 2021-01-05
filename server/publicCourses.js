@@ -17,6 +17,10 @@ async function fetchCourses() {
       {id: 3, sis_course_id: 'ExampleHT17', account_id: 29, workflow_state: 'available', course_code: 'F', is_public: true, name: 'Example course VI HT18'},
       {id: 3, sis_course_id: 'ExampleHT18', account_id: 63, workflow_state: 'available', course_code: 'A', is_public: true, name: 'Example course VII HT18'},
       {id: 3, sis_course_id: 'ExampleHT18', account_id: 67, workflow_state: 'available', course_code: 'C', is_public: true, name: 'Example course VIII HT18'},
+      {id: 3, sis_course_id: 'ExampleHT19', account_id: 24, workflow_state: 'available', course_code: 'C', is_public: true, name: 'Example course XI HT19'},
+      {id: 3, sis_course_id: 'ExampleVT20', account_id: 27, workflow_state: 'available', course_code: 'C', is_public: true, name: 'Example course XII VT20'},
+      {id: 3, sis_course_id: 'ExampleHT20', account_id: 29, workflow_state: 'available', course_code: 'C', is_public: true, name: 'Example course XIII HT20'},
+      {id: 3, sis_course_id: 'ExampleVT21', account_id: 14, workflow_state: 'available', course_code: 'C', is_public: true, name: 'Example course XIV VT21'},
     ]
   }
 
@@ -177,6 +181,20 @@ async function getCourses () {
     }
   }
 
+  function isRecent (course) {
+    const sortableTerm = course.term.slice(0, 2) === 'VT' ? "0" : "1"
+    const sortableYear = course.term.slice(2)
+    const sortableYearTerm = parseInt(sortableYear + sortableTerm, 10)
+
+
+    const limitTerm = (new Date()).getMonth() < 6 ? "0" : "1"
+    const limitYear = ((new Date()).getFullYear() - 2).toString(10).slice(2)
+
+    const limitYearTerm = parseInt(limitYear + limitTerm, 10);
+
+    return sortableYearTerm >= limitYearTerm;
+  }
+
   if (!cache) {
     cache = fetchCourses()
   }
@@ -187,6 +205,7 @@ async function getCourses () {
     .filter(c => c.workflow_state === 'available')
     .filter(c => c.is_public || c.is_public_to_auth_users)
     .map(format)
+    .filter(isRecent)
     .sort(latestTermFirstSort)
 }
 
