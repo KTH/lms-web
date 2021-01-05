@@ -50,7 +50,7 @@ server.get(prefix, async (req, res) => {
     }
     res.write(publicCourses.getHtml3())
   } catch (e) {
-    logger.error('Error getting or rendering courses', e)
+    log.error('Error getting or rendering courses', e)
   }
 
   res.write(publicCourses.getHtml4(req.query.view === 'embed', courses))
