@@ -86,7 +86,7 @@ router.get('/_monitor', _monitor)
 router.get('/_monitor_all', _monitorAll)
 router.get('/_monitor_core', (req, res) => {
   res.setHeader('Content-Type', 'text/plain')
-  res.send(`APPLICATION_STATUS: OK`)
+  res.send('APPLICATION_STATUS: OK')
 })
 
 module.exports = router

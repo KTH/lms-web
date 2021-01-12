@@ -5,22 +5,22 @@ const canvasApi = new CanvasApi(process.env.CANVAS_ROOT + '/api/v1', process.env
 
 let cache
 
-async function fetchCourses() {
+async function fetchCourses () {
   if (process.env.NODE_ENV === 'development' && process.env.USE_FAKE === 'true') {
     return [
-      {id: 3, sis_course_id: 'ExampleHT18', account_id: 14, workflow_state: 'available', course_code: 'H', is_public: true, name: 'Example course I HT18'},
-      {id: 3, sis_course_id: 'ExampleVT18', account_id: 14, workflow_state: 'available', course_code: 'B', is_public: true, name: 'Example course II VT18'},
-      {id: 3, sis_course_id: 'ExampleHT18', account_id: 24, workflow_state: 'available', course_code: 'G', is_public: true, name: 'Example course III HT18'},
-      {id: 3, sis_course_id: 'ExampleHT16', account_id: 24, workflow_state: 'available', course_code: 'E', is_public: true, name: 'Example course IV HT16'},
-      {id: 3, sis_course_id: 'Blablablabl', account_id: 67, workflow_state: 'available', course_code: 'C', is_public: true, name: 'Example course nowhere'},
-      {id: 3, sis_course_id: 'ExampleVT17', account_id: 27, workflow_state: 'available', course_code: 'D', is_public: true, name: 'Example course V VT17'},
-      {id: 3, sis_course_id: 'ExampleHT17', account_id: 29, workflow_state: 'available', course_code: 'F', is_public: true, name: 'Example course VI HT18'},
-      {id: 3, sis_course_id: 'ExampleHT18', account_id: 63, workflow_state: 'available', course_code: 'A', is_public: true, name: 'Example course VII HT18'},
-      {id: 3, sis_course_id: 'ExampleHT18', account_id: 67, workflow_state: 'available', course_code: 'C', is_public: true, name: 'Example course VIII HT18'},
-      {id: 3, sis_course_id: 'ExampleHT19', account_id: 24, workflow_state: 'available', course_code: 'C', is_public: true, name: 'Example course XI HT19'},
-      {id: 3, sis_course_id: 'ExampleVT20', account_id: 27, workflow_state: 'available', course_code: 'C', is_public: true, name: 'Example course XII VT20'},
-      {id: 3, sis_course_id: 'ExampleHT20', account_id: 29, workflow_state: 'available', course_code: 'C', is_public: true, name: 'Example course XIII HT20'},
-      {id: 3, sis_course_id: 'ExampleVT21', account_id: 14, workflow_state: 'available', course_code: 'C', is_public: true, name: 'Example course XIV VT21'},
+      { id: 3, sis_course_id: 'ExampleHT18', account_id: 14, workflow_state: 'available', course_code: 'H', is_public: true, name: 'Example course I HT18' },
+      { id: 3, sis_course_id: 'ExampleVT18', account_id: 14, workflow_state: 'available', course_code: 'B', is_public: true, name: 'Example course II VT18' },
+      { id: 3, sis_course_id: 'ExampleHT18', account_id: 24, workflow_state: 'available', course_code: 'G', is_public: true, name: 'Example course III HT18' },
+      { id: 3, sis_course_id: 'ExampleHT16', account_id: 24, workflow_state: 'available', course_code: 'E', is_public: true, name: 'Example course IV HT16' },
+      { id: 3, sis_course_id: 'Blablablabl', account_id: 67, workflow_state: 'available', course_code: 'C', is_public: true, name: 'Example course nowhere' },
+      { id: 3, sis_course_id: 'ExampleVT17', account_id: 27, workflow_state: 'available', course_code: 'D', is_public: true, name: 'Example course V VT17' },
+      { id: 3, sis_course_id: 'ExampleHT17', account_id: 29, workflow_state: 'available', course_code: 'F', is_public: true, name: 'Example course VI HT18' },
+      { id: 3, sis_course_id: 'ExampleHT18', account_id: 63, workflow_state: 'available', course_code: 'A', is_public: true, name: 'Example course VII HT18' },
+      { id: 3, sis_course_id: 'ExampleHT18', account_id: 67, workflow_state: 'available', course_code: 'C', is_public: true, name: 'Example course VIII HT18' },
+      { id: 3, sis_course_id: 'ExampleHT19', account_id: 24, workflow_state: 'available', course_code: 'C', is_public: true, name: 'Example course XI HT19' },
+      { id: 3, sis_course_id: 'ExampleVT20', account_id: 27, workflow_state: 'available', course_code: 'C', is_public: true, name: 'Example course XII VT20' },
+      { id: 3, sis_course_id: 'ExampleHT20', account_id: 29, workflow_state: 'available', course_code: 'C', is_public: true, name: 'Example course XIII HT20' },
+      { id: 3, sis_course_id: 'ExampleVT21', account_id: 14, workflow_state: 'available', course_code: 'C', is_public: true, name: 'Example course XIV VT21' }
     ]
   }
 
@@ -34,14 +34,14 @@ async function fetchCourses() {
   }
 }
 
-function start() {
+function start () {
   const SIX_HOURS = 1000 * 3600 * 6
 
   setInterval(() => { cache = fetchCourses() }, SIX_HOURS)
   cache = fetchCourses()
 }
 
-function getHtmlHeader() {
+function getHtmlHeader () {
   return `
     <div id="header" class="header hasPrimaryHeader">
       <div id="primaryHeader" class="primaryHeader">
@@ -68,7 +68,7 @@ function getHtml1 (embed = false) {
       </head>
       <body class="${embed ? 'embedded' : ''}">
         ${embed ? '' : '<div class="container">'}
-        ${embed ? '' :  getHtmlHeader()}
+        ${embed ? '' : getHtmlHeader()}
         ${embed ? '' : '<hr class="header-hr">'}
         <div class="loading-bar">
           <div class="bar1"></div>
@@ -126,19 +126,19 @@ function getHtml4 (embed = false, courses = []) {
 
 async function getCourses () {
   const schools = new Map([
-    [14, 'ABE'],  // "ABE" in Canvas
-    [17, 'CBH'],  // "BIO" in Canvas
-    [22, 'CBH'],  // "CHE" in Canvas
+    [14, 'ABE'], // "ABE" in Canvas
+    [17, 'CBH'], // "BIO" in Canvas
+    [22, 'CBH'], // "CHE" in Canvas
     [23, 'EECS'], // "CSC" in Canvas
-    [24, 'ITM'],  // "ECE" in Canvas
+    [24, 'ITM'], // "ECE" in Canvas
     [25, 'EECS'], // "EES" in Canvas
     [26, 'EECS'], // "ICT" in Canvas
-    [27, 'ITM'],  // "ITM" in Canvas
-    [28, 'SCI'],  // "SCI" in Canvas
-    [29, 'CBH'],  // "CHE" in Canvas
+    [27, 'ITM'], // "ITM" in Canvas
+    [28, 'SCI'], // "SCI" in Canvas
+    [29, 'CBH'], // "CHE" in Canvas
     [59, 'EECS'], // "EECS" in Canvas
-    [63, 'CBH'],  // "CBH" in Canvas
-    [67, 'GVS']   // "GVS" in Canvas
+    [63, 'CBH'], // "CBH" in Canvas
+    [67, 'GVS'] // "GVS" in Canvas
   ])
 
   const NOTERM = 'N/A'
@@ -162,17 +162,16 @@ async function getCourses () {
     visibility: course.is_public ? 'Public' : 'KTH'
   })
 
-
   function latestTermFirstSort (a, b) {
     if (a.term === NOTERM) {
       return 1
     } else if (b.term === NOTERM) {
       return -1
     } else {
-      let aTermSeason = a.term.slice(0, 2) === 'VT' ? 0 : 1
-      let bTermSeason = b.term.slice(0, 2) === 'VT' ? 0 : 1
-      let aTermYear = parseInt(a.term.slice(2))
-      let bTermYear = parseInt(b.term.slice(2))
+      const aTermSeason = a.term.slice(0, 2) === 'VT' ? 0 : 1
+      const bTermSeason = b.term.slice(0, 2) === 'VT' ? 0 : 1
+      const aTermYear = parseInt(a.term.slice(2))
+      const bTermYear = parseInt(b.term.slice(2))
       if (aTermYear !== bTermYear) {
         return bTermYear - aTermYear
       } else {
@@ -182,17 +181,16 @@ async function getCourses () {
   }
 
   function isRecent (course) {
-    const sortableTerm = course.term.slice(0, 2) === 'VT' ? "0" : "1"
+    const sortableTerm = course.term.slice(0, 2) === 'VT' ? '0' : '1'
     const sortableYear = course.term.slice(2)
     const sortableYearTerm = parseInt(sortableYear + sortableTerm, 10)
 
-
-    const limitTerm = (new Date()).getMonth() < 6 ? "0" : "1"
+    const limitTerm = (new Date()).getMonth() < 6 ? '0' : '1'
     const limitYear = ((new Date()).getFullYear() - 2).toString(10).slice(2)
 
-    const limitYearTerm = parseInt(limitYear + limitTerm, 10);
+    const limitYearTerm = parseInt(limitYear + limitTerm, 10)
 
-    return sortableYearTerm >= limitYearTerm;
+    return sortableYearTerm >= limitYearTerm
   }
 
   if (!cache) {
