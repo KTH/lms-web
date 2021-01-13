@@ -5,7 +5,9 @@ let sortDirection = null
 
 function updateTable () {
   const alphabeticSorter = (field, direction) => (a, b) => {
-    return direction === 'ASC' ? a[field].localeCompare(b[field]) : b[field].localeCompare(a[field])
+    return direction === 'ASC'
+      ? a[field].localeCompare(b[field])
+      : b[field].localeCompare(a[field])
   }
 
   const termSorter = (field, direction) => (a, b) => {
@@ -31,10 +33,11 @@ function updateTable () {
   }
 
   const sortFunction = sortField === 'term' ? termSorter : alphabeticSorter
-  const html = courses
+  const html = window.courses
     .concat()
     .sort(sortFunction(sortField, sortDirection))
-    .map(course => (`
+    .map(
+      (course) => `
       <tr>
         <td>
           <a href="https://kth.instructure.com/courses/${course.id}">${course.name}</a>
@@ -44,13 +47,14 @@ function updateTable () {
         <td>${course.term}</td>
         <td>${course.visibility}</td>
       </tr>
-    `))
+    `
+    )
     .join('')
 
   document.querySelector('#table-body').innerHTML = html
 }
 
-document.querySelectorAll('.sort').forEach(function(element) {
+document.querySelectorAll('.sort').forEach(function (element) {
   element.onclick = function () {
     const field = element.getAttribute('data-field')
 
@@ -61,10 +65,13 @@ document.querySelectorAll('.sort').forEach(function(element) {
       sortDirection = 'ASC'
     }
 
-    document.querySelectorAll('.sort').forEach(element => element.className = 'sort')
-    element.className = `sort ${sortDirection === 'ASC' ? 'sort-asc' : 'sort-desc'}`
+    document.querySelectorAll('.sort').forEach((element) => {
+      element.className = 'sort'
+    })
+    element.className = `sort ${
+      sortDirection === 'ASC' ? 'sort-asc' : 'sort-desc'
+    }`
 
     updateTable()
   }
-
 })

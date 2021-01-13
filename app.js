@@ -18,7 +18,6 @@ process.on('unhandledRejection', (reason, p) => {
 })
 require('dotenv-safe').config({ example: '.env.in' })
 
-
 const path = require('path')
 const express = require('express')
 const server = require('kth-node-server')
@@ -45,12 +44,12 @@ server.get(prefix, async (req, res) => {
     res.write(publicCourses.getHtml2())
 
     log.info('Rendering courses...')
-    for (let course of courses) {
+    for (const course of courses) {
       res.write(publicCourses.getHtmlFromCourse(course))
     }
     res.write(publicCourses.getHtml3())
   } catch (e) {
-    logger.error('Error getting or rendering courses', e)
+    log.error('Error getting or rendering courses', e)
   }
 
   res.write(publicCourses.getHtml4(req.query.view === 'embed', courses))
