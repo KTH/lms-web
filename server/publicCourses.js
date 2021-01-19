@@ -1,32 +1,144 @@
 const log = require('skog')
 const prefix = process.env.PROXY_PREFIX_PATH || '/app/lms-web'
 const CanvasApi = require('kth-canvas-api')
-const canvasApi = new CanvasApi(process.env.CANVAS_ROOT + '/api/v1', process.env.CANVAS_API_KEY)
+const intl = require('./translations')
+const canvasApi = new CanvasApi(
+  process.env.CANVAS_ROOT + '/api/v1',
+  process.env.CANVAS_API_KEY
+)
 
 let cache
 
 async function fetchCourses () {
-  if (process.env.NODE_ENV === 'development' && process.env.USE_FAKE === 'true') {
+  if (
+    process.env.NODE_ENV === 'development' &&
+    process.env.USE_FAKE === 'true'
+  ) {
     return [
-      { id: 3, sis_course_id: 'ExampleHT18', account_id: 14, workflow_state: 'available', course_code: 'H', is_public: true, name: 'Example course I HT18' },
-      { id: 3, sis_course_id: 'ExampleVT18', account_id: 14, workflow_state: 'available', course_code: 'B', is_public: true, name: 'Example course II VT18' },
-      { id: 3, sis_course_id: 'ExampleHT18', account_id: 24, workflow_state: 'available', course_code: 'G', is_public: true, name: 'Example course III HT18' },
-      { id: 3, sis_course_id: 'ExampleHT16', account_id: 24, workflow_state: 'available', course_code: 'E', is_public: true, name: 'Example course IV HT16' },
-      { id: 3, sis_course_id: 'Blablablabl', account_id: 67, workflow_state: 'available', course_code: 'C', is_public: true, name: 'Example course nowhere' },
-      { id: 3, sis_course_id: 'ExampleVT17', account_id: 27, workflow_state: 'available', course_code: 'D', is_public: true, name: 'Example course V VT17' },
-      { id: 3, sis_course_id: 'ExampleHT17', account_id: 29, workflow_state: 'available', course_code: 'F', is_public: true, name: 'Example course VI HT18' },
-      { id: 3, sis_course_id: 'ExampleHT18', account_id: 63, workflow_state: 'available', course_code: 'A', is_public: true, name: 'Example course VII HT18' },
-      { id: 3, sis_course_id: 'ExampleHT18', account_id: 67, workflow_state: 'available', course_code: 'C', is_public: true, name: 'Example course VIII HT18' },
-      { id: 3, sis_course_id: 'ExampleHT19', account_id: 24, workflow_state: 'available', course_code: 'C', is_public: true, name: 'Example course XI HT19' },
-      { id: 3, sis_course_id: 'ExampleVT20', account_id: 27, workflow_state: 'available', course_code: 'C', is_public: true, name: 'Example course XII VT20' },
-      { id: 3, sis_course_id: 'ExampleHT20', account_id: 29, workflow_state: 'available', course_code: 'C', is_public: true, name: 'Example course XIII HT20' },
-      { id: 3, sis_course_id: 'ExampleVT21', account_id: 14, workflow_state: 'available', course_code: 'C', is_public: true, name: 'Example course XIV VT21' }
+      {
+        id: 3,
+        sis_course_id: 'ExampleHT18',
+        account_id: 14,
+        workflow_state: 'available',
+        course_code: 'H',
+        is_public: true,
+        name: 'Example course I HT18'
+      },
+      {
+        id: 3,
+        sis_course_id: 'ExampleVT18',
+        account_id: 14,
+        workflow_state: 'available',
+        course_code: 'B',
+        is_public: true,
+        name: 'Example course II VT18'
+      },
+      {
+        id: 3,
+        sis_course_id: 'ExampleHT18',
+        account_id: 24,
+        workflow_state: 'available',
+        course_code: 'G',
+        is_public: true,
+        name: 'Example course III HT18'
+      },
+      {
+        id: 3,
+        sis_course_id: 'ExampleHT16',
+        account_id: 24,
+        workflow_state: 'available',
+        course_code: 'E',
+        is_public: true,
+        name: 'Example course IV HT16'
+      },
+      {
+        id: 3,
+        sis_course_id: 'Blablablabl',
+        account_id: 67,
+        workflow_state: 'available',
+        course_code: 'C',
+        is_public: true,
+        name: 'Example course nowhere'
+      },
+      {
+        id: 3,
+        sis_course_id: 'ExampleVT17',
+        account_id: 27,
+        workflow_state: 'available',
+        course_code: 'D',
+        is_public: true,
+        name: 'Example course V VT17'
+      },
+      {
+        id: 3,
+        sis_course_id: 'ExampleHT17',
+        account_id: 29,
+        workflow_state: 'available',
+        course_code: 'F',
+        is_public: true,
+        name: 'Example course VI HT18'
+      },
+      {
+        id: 3,
+        sis_course_id: 'ExampleHT18',
+        account_id: 63,
+        workflow_state: 'available',
+        course_code: 'A',
+        is_public: true,
+        name: 'Example course VII HT18'
+      },
+      {
+        id: 3,
+        sis_course_id: 'ExampleHT18',
+        account_id: 67,
+        workflow_state: 'available',
+        course_code: 'C',
+        is_public: true,
+        name: 'Example course VIII HT18'
+      },
+      {
+        id: 3,
+        sis_course_id: 'ExampleHT19',
+        account_id: 24,
+        workflow_state: 'available',
+        course_code: 'C',
+        is_public: true,
+        name: 'Example course XI HT19'
+      },
+      {
+        id: 3,
+        sis_course_id: 'ExampleVT20',
+        account_id: 27,
+        workflow_state: 'available',
+        course_code: 'C',
+        is_public: true,
+        name: 'Example course XII VT20'
+      },
+      {
+        id: 3,
+        sis_course_id: 'ExampleHT20',
+        account_id: 29,
+        workflow_state: 'available',
+        course_code: 'C',
+        is_public: true,
+        name: 'Example course XIII HT20'
+      },
+      {
+        id: 3,
+        sis_course_id: 'ExampleVT21',
+        account_id: 14,
+        workflow_state: 'available',
+        course_code: 'C',
+        is_public: true,
+        name: 'Example course XIV VT21'
+      }
     ]
   }
 
   try {
-    const courses = (await canvasApi.listCourses())
-      .filter(course => course.sis_course_id)
+    const courses = (await canvasApi.listCourses()).filter(
+      (course) => course.sis_course_id
+    )
 
     return courses
   } catch (e) {
@@ -37,7 +149,9 @@ async function fetchCourses () {
 function start () {
   const SIX_HOURS = 1000 * 3600 * 6
 
-  setInterval(() => { cache = fetchCourses() }, SIX_HOURS)
+  setInterval(() => {
+    cache = fetchCourses()
+  }, SIX_HOURS)
   cache = fetchCourses()
 }
 
@@ -57,11 +171,11 @@ function getHtmlHeader () {
   `
 }
 
-function getHtml1 (embed = false) {
+function getHtml1 (embed = false, lang = 'en') {
   return `
     <html>
       <head>
-        <title>KTH | Open courses in Canvas</title>
+        <title>KTH | ${intl(lang, 'openCoursesInCanvas')}</title>
         <link rel="shortcut icon" id="favicon" href="//www.kth.se/img/icon/favicon.ico">
         <link rel="stylesheet" href="${prefix}/kth-style/css/kth-bootstrap.css">
         <link rel="stylesheet" href="${prefix}/static/style.css">
@@ -76,16 +190,22 @@ function getHtml1 (embed = false) {
   `
 }
 
-function getHtml2 () {
+function getHtml2 (lang = 'en') {
   return `
     <table class="table table-hover">
       <thead>
         <tr>
-          <th class="sort" data-field="name">Course name</th>
-          <th class="sort" data-field="school">School</th>
-          <th class="sort" data-field="course_code">Course code</th>
+          <th class="sort" data-field="name">${intl(lang, 'courseName')}</th>
+          <th class="sort" data-field="school">${intl(lang, 'school')}</th>
+          <th class="sort" data-field="course_code">${intl(
+            lang,
+            'courseCode'
+          )}</th>
           <th class="sort" data-field="term">Term</th>
-          <th class="sort" data-field="visibility">Visibility</th>
+          <th class="sort" data-field="visibility">${intl(
+            lang,
+            'visibility'
+          )}</th>
         </tr>
       </thead>
       <tbody id="table-body">
@@ -153,7 +273,7 @@ async function getCourses () {
     return regexMatches[0] || NOTERM
   }
 
-  const format = course => ({
+  const format = (course) => ({
     id: course.id,
     name: course.name,
     school: parseSchool(course.account_id),
@@ -185,8 +305,8 @@ async function getCourses () {
     const sortableYear = course.term.slice(2)
     const sortableYearTerm = parseInt(sortableYear + sortableTerm, 10)
 
-    const limitTerm = (new Date()).getMonth() < 6 ? '0' : '1'
-    const limitYear = ((new Date()).getFullYear() - 2).toString(10).slice(2)
+    const limitTerm = new Date().getMonth() < 6 ? '0' : '1'
+    const limitYear = (new Date().getFullYear() - 2).toString(10).slice(2)
 
     const limitYearTerm = parseInt(limitYear + limitTerm, 10)
 
@@ -200,8 +320,8 @@ async function getCourses () {
   const courses = await cache
 
   return courses
-    .filter(c => c.workflow_state === 'available')
-    .filter(c => c.is_public || c.is_public_to_auth_users)
+    .filter((c) => c.workflow_state === 'available')
+    .filter((c) => c.is_public || c.is_public_to_auth_users)
     .map(format)
     .filter(isRecent)
     .sort(latestTermFirstSort)
