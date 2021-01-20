@@ -4,14 +4,16 @@ const translations = {
     school: 'School',
     courseCode: 'Course code',
     visibility: 'Visibility',
-    openCoursesInCanvas: 'Open courses in Canvas'
+    openCoursesInCanvas: 'Open courses in Canvas',
+    term: 'Term'
   },
   sv: {
     courseName: 'Kursnamn',
     school: 'Skola',
     courseCode: 'Kurskod',
     visibility: 'Synlighet',
-    openCoursesInCanvas: 'Öppna kurser i Canvas'
+    openCoursesInCanvas: 'Öppna kurser i Canvas',
+    term: 'Termin'
   }
 }
 

@@ -201,7 +201,7 @@ function getHtml2 (lang = 'en') {
             lang,
             'courseCode'
           )}</th>
-          <th class="sort" data-field="term">Term</th>
+          <th class="sort" data-field="term">${intl(lang, 'term')}</th>
           <th class="sort" data-field="visibility">${intl(
             lang,
             'visibility'
