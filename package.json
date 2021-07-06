@@ -4,8 +4,10 @@
   "description": "Public information taken from Canvas shown as webs",
   "main": "app.js",
   "scripts": {
-    "test": "standard",
-    "format": "standard --fix",
+    "test": "npm run test:format && npm run test:lint",
+    "test:format": "prettier --check .",
+    "test:lint": "eslint *.js public server",
+    "format": "prettier --write .",
     "start": "node app.js",
     "dev": "NODE_ENV=development nodemon app.js --ignore public/ | bunyan -o short",
     "debug": "NODE_ENV=development node --nolazy --inspect-brk=9229 app.js | bunyan -o short"
@@ -33,7 +35,9 @@
     "skog": "^1.0.0-alpha.1"
   },
   "devDependencies": {
+    "@kth/eslint-config-kth": "^1.0.10",
+    "eslint": "^7.30.0",
     "nodemon": "^2.0.3",
-    "standard": "^14.3.3"
+    "prettier": "^2.3.2"
   }
 }

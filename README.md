@@ -62,8 +62,7 @@ The logs in the app are output structured in JSON using [Bunyan]. You can use th
 $ npm start | bunyan
 ```
 
-
-[Canvas]: https://github.com/instructure/canvas-lms
+[canvas]: https://github.com/instructure/canvas-lms
 [lms-api]: https://github.com/KTH/lms-api
-[Bunyan]: https://github.com/trentm/node-bunyan
+[bunyan]: https://github.com/trentm/node-bunyan
 [handlebars]: https://github.com/wycats/handlebars.js/
