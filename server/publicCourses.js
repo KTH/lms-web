@@ -144,6 +144,8 @@ async function fetchCourses() {
     return courses;
   } catch (e) {
     log.error(e, "Could not fetch courses from Canvas");
+
+    return [];
   }
 }
 
@@ -286,8 +288,8 @@ async function getCourses() {
     }
     const aTermSeason = a.term.slice(0, 2) === "VT" ? 0 : 1;
     const bTermSeason = b.term.slice(0, 2) === "VT" ? 0 : 1;
-    const aTermYear = parseInt(a.term.slice(2));
-    const bTermYear = parseInt(b.term.slice(2));
+    const aTermYear = parseInt(a.term.slice(2), 10);
+    const bTermYear = parseInt(b.term.slice(2), 10);
     if (aTermYear !== bTermYear) {
       return bTermYear - aTermYear;
     }

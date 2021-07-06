@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 // Catch the "click" events
 // Trigger sort in different ways
 let sortField = "";
@@ -13,10 +14,10 @@ function updateTable() {
     const yearA = parseInt(a[field].slice(2), 10);
     const yearB = parseInt(b[field].slice(2), 10);
 
-    if (isNaN(yearA)) {
+    if (Number.isNaN(yearA)) {
       return 1;
     }
-    if (isNaN(yearB)) {
+    if (Number.isNaN(yearB)) {
       return -1;
     }
 
@@ -55,7 +56,7 @@ function updateTable() {
 }
 
 document.querySelectorAll(".sort").forEach((element) => {
-  element.onclick = function () {
+  element.onclick = () => {
     const field = element.getAttribute("data-field");
 
     if (sortField === field) {
@@ -65,8 +66,8 @@ document.querySelectorAll(".sort").forEach((element) => {
       sortDirection = "ASC";
     }
 
-    document.querySelectorAll(".sort").forEach((element) => {
-      element.className = "sort";
+    document.querySelectorAll(".sort").forEach((el) => {
+      el.className = "sort";
     });
     element.className = `sort ${
       sortDirection === "ASC" ? "sort-asc" : "sort-desc"

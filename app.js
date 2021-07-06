@@ -14,7 +14,7 @@ process.on("uncaughtException", (err) => {
   log.fatal(err, "Uncaught Exception thrown");
   process.exit(1);
 });
-process.on("unhandledRejection", (reason, p) => {
+process.on("unhandledRejection", (reason) => {
   throw reason;
 });
 require("dotenv-safe").config({ example: ".env.in" });

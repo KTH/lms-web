@@ -3,12 +3,13 @@
  */
 const rp = require("request-promise");
 const express = require("express");
+const log = require("skog");
+const CanvasApi = require("kth-canvas-api");
+
 const packageFile = require("../package.json");
 const version = require("../config/version");
 
 const router = express.Router();
-const log = require("skog");
-const CanvasApi = require("kth-canvas-api");
 
 const canvasApi = new CanvasApi(
   process.env.CANVAS_ROOT + "/api/v1",
