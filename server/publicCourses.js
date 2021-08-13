@@ -1,14 +1,12 @@
 const log = require("skog");
-
-const prefix = process.env.PROXY_PREFIX_PATH || "/app/lms-web";
 const CanvasApi = require("kth-canvas-api");
+const intl = require("./translations");
 
 const canvasApi = new CanvasApi(
   process.env.CANVAS_ROOT + "/api/v1",
   process.env.CANVAS_API_KEY
 );
-
-let cache;
+const prefix = process.env.PROXY_PREFIX_PATH || "/app/lms-web";
 
 async function fetchCourses() {
   if (
@@ -149,6 +147,7 @@ async function fetchCourses() {
   }
 }
 
+let cache;
 function start() {
   const SIX_HOURS = 1000 * 3600 * 6;
 
@@ -174,11 +173,11 @@ function getHtmlHeader() {
   `;
 }
 
-function getHtml1(embed = false) {
+function getHtml1(embed = false, lang = "en") {
   return `
     <html>
       <head>
-        <title>KTH | Open courses in Canvas</title>
+        <title>KTH | ${intl(lang, "openCoursesInCanvas")}</title>
         <link rel="shortcut icon" id="favicon" href="//www.kth.se/img/icon/favicon.ico">
         <link rel="stylesheet" href="${prefix}/kth-style/css/kth-bootstrap.css">
         <link rel="stylesheet" href="${prefix}/static/style.css">
@@ -193,16 +192,22 @@ function getHtml1(embed = false) {
   `;
 }
 
-function getHtml2() {
+function getHtml2(lang = "en") {
   return `
     <table class="table table-hover">
       <thead>
         <tr>
-          <th class="sort" data-field="name">Course name</th>
-          <th class="sort" data-field="school">School</th>
-          <th class="sort" data-field="course_code">Course code</th>
-          <th class="sort" data-field="term">Term</th>
-          <th class="sort" data-field="visibility">Visibility</th>
+          <th class="sort" data-field="name">${intl(lang, "courseName")}</th>
+          <th class="sort" data-field="school">${intl(lang, "school")}</th>
+          <th class="sort" data-field="course_code">${intl(
+            lang,
+            "courseCode"
+          )}</th>
+          <th class="sort" data-field="term">${intl(lang, "term")}</th>
+          <th class="sort" data-field="visibility">${intl(
+            lang,
+            "visibility"
+          )}</th>
         </tr>
       </thead>
       <tbody id="table-body">

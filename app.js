@@ -37,16 +37,17 @@ server.use(prefix + "/static", express.static(path.join(__dirname, "public")));
 // If you need more routes, replace the following line with a separate Express
 // Router object
 server.get(prefix, async (req, res) => {
+  let courses;
+  const lang = req.query.lang || "en";
+
   res.status(200);
   res.set("Content-type", "text/html");
-  res.write(publicCourses.getHtml1(req.query.view === "embed"));
-
-  let courses;
+  res.write(publicCourses.getHtml1(req.query.view === "embed", lang));
 
   try {
     log.info("Getting courses...");
     courses = await publicCourses.getCourses();
-    res.write(publicCourses.getHtml2());
+    res.write(publicCourses.getHtml2(lang));
 
     log.info("Rendering courses...");
     for (const course of courses) {
