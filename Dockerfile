@@ -1,4 +1,4 @@
-FROM kthse/kth-nodejs:12.0.0
+FROM node:14
 
 COPY ["config", "config"]
 
