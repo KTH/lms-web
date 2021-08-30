@@ -36,6 +36,7 @@
     "@kth/eslint-config-kth": "^1.0.10",
     "eslint": "^7.30.0",
     "nodemon": "^2.0.3",
+    "pino-pretty": "^6.0.0",
     "prettier": "^2.3.2"
   }
 }
