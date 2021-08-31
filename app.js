@@ -23,7 +23,7 @@ const prefix = process.env.PROXY_PREFIX_PATH || "/app/lms-web";
 
 server.use(
   prefix + "/kth-style",
-  express.static(path.join(__dirname, "node_modules/kth-style/build"))
+  express.static(path.join(__dirname, "node_modules/kth-style/dist"))
 );
 server.use(prefix, systemCtrl);
 server.use(prefix + "/static", express.static(path.join(__dirname, "public")));
