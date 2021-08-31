@@ -1,7 +1,7 @@
 /**
  * Routes for System Control (monitor, etc…)
  */
-const rp = require("request-promise");
+const fetch = require("got");
 const express = require("express");
 const log = require("skog");
 const CanvasApi = require("kth-canvas-api");
@@ -28,10 +28,9 @@ async function checkCanvasKey() {
 
 async function checkCanvasStatus() {
   try {
-    const canvasStatus = await rp({
-      url: "https://nlxv32btr6v7.statuspage.io/api/v2/status.json",
-      json: true,
-    });
+    const canvasStatus = await fetch(
+      "https://nlxv32btr6v7.statuspage.io/api/v2/status.json"
+    ).json();
     return canvasStatus.status.indicator === "none";
   } catch (e) {
     log.info("An error occured:", e);

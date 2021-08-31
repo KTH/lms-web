@@ -9,8 +9,8 @@
     "test:lint": "eslint *.js public server",
     "format": "prettier --write .",
     "start": "node app.js",
-    "dev": "NODE_ENV=development nodemon app.js --ignore public/ | bunyan -o short",
-    "debug": "NODE_ENV=development node --nolazy --inspect-brk=9229 app.js | bunyan -o short"
+    "dev": "NODE_ENV=development nodemon app.js --ignore public/ | pino-pretty -e options,response",
+    "debug": "NODE_ENV=development node --nolazy --inspect-brk=9229 app.js | pino-pretty -e options,response"
   },
   "repository": {
     "type": "git",
@@ -23,22 +23,20 @@
   },
   "homepage": "https://github.com/KTH/lms-web#readme",
   "dependencies": {
-    "bunyan": "^1.8.12",
-    "dotenv": "^6.2.0",
     "dotenv-safe": "^8.2.0",
     "express": "^4.17.1",
+    "got": "^11.8.2",
     "kth-canvas-api": "^0.15.7",
     "kth-node-server": "^3.1.2",
-    "kth-style": "^3.2.19",
-    "popper.js": "^1.16.1",
-    "request": "^2.88.2",
-    "request-promise": "^4.2.5",
-    "skog": "^1.0.0-alpha.1"
+    "kth-style": "^7.0.2",
+    "pino": "^6.11.2",
+    "skog": "^2.1.0"
   },
   "devDependencies": {
     "@kth/eslint-config-kth": "^1.0.10",
     "eslint": "^7.30.0",
     "nodemon": "^2.0.3",
+    "pino-pretty": "^6.0.0",
     "prettier": "^2.3.2"
   }
 }

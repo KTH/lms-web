@@ -1,13 +1,7 @@
 const log = require("skog");
 
-require("skog/bunyan").createLogger({
-  app: require("./package.json").name,
-  name: require("./package.json").name,
-  level:
-    process.env.NODE_ENV === "development"
-      ? "trace"
-      : process.env.LOG_LEVEL || "info",
-  serializers: require("bunyan").stdSerializers,
+log.init.pino({
+  app: "lms-web",
 });
 
 process.on("uncaughtException", (err) => {
@@ -29,7 +23,7 @@ const prefix = process.env.PROXY_PREFIX_PATH || "/app/lms-web";
 
 server.use(
   prefix + "/kth-style",
-  express.static(path.join(__dirname, "node_modules/kth-style/build"))
+  express.static(path.join(__dirname, "node_modules/kth-style/dist"))
 );
 server.use(prefix, systemCtrl);
 server.use(prefix + "/static", express.static(path.join(__dirname, "public")));
