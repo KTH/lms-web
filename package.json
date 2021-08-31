@@ -25,11 +25,11 @@
   "dependencies": {
     "dotenv-safe": "^8.2.0",
     "express": "^4.17.1",
+    "got": "^11.8.2",
     "kth-canvas-api": "^0.15.7",
     "kth-node-server": "^3.1.2",
     "kth-style": "^3.2.19",
     "pino": "^6.11.2",
-    "request-promise": "^4.2.6",
     "skog": "^2.1.0"
   },
   "devDependencies": {
