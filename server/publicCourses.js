@@ -45,23 +45,7 @@ function start() {
   cache = fetchCourses();
 }
 
-function getHtmlHeader() {
-  return `
-    <div id="header" class="header hasPrimaryHeader">
-      <div id="primaryHeader" class="primaryHeader">
-        <div id="imageLogoBlock">
-          <div class="tlc cid-1_77257 no-categories block figure defaultTheme mainLogo">
-            <div class="imageWrapper">
-              <a href="//kth.se"><img src="//www.kth.se/polopoly_fs/1.77257!/KTH_Logotyp_RGB_2013-2.svg" alt="KTH logo" height="70" width="70"></a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
-}
-
-function getHtml1(embed = false, lang = "en") {
+function getHtml1(lang = "en") {
   return `
     <html>
       <head>
@@ -70,10 +54,7 @@ function getHtml1(embed = false, lang = "en") {
         <link rel="stylesheet" href="${prefix}/kth-style/css/kth-bootstrap.css">
         <link rel="stylesheet" href="${prefix}/static/style.css">
       </head>
-      <body class="${embed ? "embedded" : ""}">
-        ${embed ? "" : '<div class="container">'}
-        ${embed ? "" : getHtmlHeader()}
-        ${embed ? "" : '<hr class="header-hr">'}
+      <body class="embedded">
         <div class="loading-bar">
           <div class="bar1"></div>
         </div>
@@ -123,9 +104,8 @@ function getHtml3() {
   `;
 }
 
-function getHtml4(embed = false, courses = []) {
+function getHtml4(courses = []) {
   return `
-        ${embed ? "" : "</div>"}
         <script>document.querySelector('.loading-bar').classList.add('complete')</script>
         <script>window.courses = ${JSON.stringify(courses)}</script>
         <script src="${prefix}/static/public-courses.js"></script>

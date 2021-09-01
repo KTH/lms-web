@@ -37,11 +37,9 @@ It will start a web server in the port 3001. Go to http://localhost:3001/app/lms
 
 ## How it works
 
-The app exposes a single endpoint, `/`. It fetches the courses from [lms-api], and renders only the public ones using a [handlebars] template.
+The app exposes a single endpoint, `/`. It fetches the courses from [lms-api], and renders only the public ones using a [handlebars] template. This page is suitable for embedding.
 
 The app generates links to the courses in Canvas
-
-To receive a version of the course-list suitable for being embedded, supply the query string `view=embed`.
 
 ## More configuration
 

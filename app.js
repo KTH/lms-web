@@ -36,7 +36,7 @@ server.get(prefix, async (req, res) => {
 
   res.status(200);
   res.set("Content-type", "text/html");
-  res.write(publicCourses.getHtml1(req.query.view === "embed", lang));
+  res.write(publicCourses.getHtml1(lang));
 
   try {
     log.info("Getting courses...");
@@ -52,7 +52,7 @@ server.get(prefix, async (req, res) => {
     log.error("Error getting or rendering courses", e);
   }
 
-  res.write(publicCourses.getHtml4(req.query.view === "embed", courses));
+  res.write(publicCourses.getHtml4(courses));
   res.end();
 });
 
