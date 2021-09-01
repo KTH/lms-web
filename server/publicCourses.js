@@ -10,13 +10,18 @@ const canvasApi = new CanvasApi(
 const prefix = process.env.PROXY_PREFIX_PATH || "/app/lms-web";
 
 async function fetchCourses() {
+  // In development we probably want to use fake data to avoid slow import
   if (
     process.env.NODE_ENV === "development" &&
     process.env.USE_FAKE === "true"
   ) {
+    log.warn(
+      "Using fake data in development mode. To change don't set USE_FAKE=true"
+    );
     return fakeData;
   }
 
+  // This is where the import id performed
   try {
     const courses = (await canvasApi.listCourses()).filter(
       (course) => course.sis_course_id

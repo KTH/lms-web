@@ -9,8 +9,8 @@
     "test:lint": "eslint *.js public server",
     "format": "prettier --write .",
     "start": "node app.js",
-    "dev": "NODE_ENV=development nodemon app.js --ignore public/ | pino-pretty -e options,response",
-    "debug": "NODE_ENV=development node --nolazy --inspect-brk=9229 app.js | pino-pretty -e options,response"
+    "dev": "NODE_ENV=development USE_FAKE=true nodemon app.js --ignore public/ | pino-pretty -e options,response",
+    "debug": "NODE_ENV=development USE_FAKE=true node --nolazy --inspect-brk=9229 app.js | pino-pretty -e options,response"
   },
   "repository": {
     "type": "git",
