@@ -45,7 +45,7 @@ function start() {
   cache = fetchCourses();
 }
 
-function getHtml1(lang = "en") {
+function generatePageTemplate(contentHtml, courses = [], lang = "en") {
   return `
     <html>
       <head>
@@ -58,10 +58,16 @@ function getHtml1(lang = "en") {
         <div class="loading-bar">
           <div class="bar1"></div>
         </div>
+${contentHtml}
+        <script>document.querySelector('.loading-bar').classList.add('complete')</script>
+        <script>window.courses = ${JSON.stringify(courses)}</script>
+        <script src="${prefix}/static/public-courses.js"></script>
+      </body>
+    </html>
   `;
 }
 
-function getHtml2(lang = "en") {
+function generateTableBody(tableRowsHTML, lang = "en") {
   return `
     <table class="table table-hover">
       <thead>
@@ -80,10 +86,13 @@ function getHtml2(lang = "en") {
         </tr>
       </thead>
       <tbody id="table-body">
+${tableRowsHTML}
+      </tbody>
+    </table>
   `;
 }
 
-function getHtmlFromCourse(course) {
+function generateCourseSnippet(course) {
   return `
     <tr>
       <td>
@@ -94,23 +103,6 @@ function getHtmlFromCourse(course) {
       <td>${course.term}</td>
       <td>${course.visibility}</td>
     </tr>
-  `;
-}
-
-function getHtml3() {
-  return `
-      </tbody>
-    </table>
-  `;
-}
-
-function getHtml4(courses = []) {
-  return `
-        <script>document.querySelector('.loading-bar').classList.add('complete')</script>
-        <script>window.courses = ${JSON.stringify(courses)}</script>
-        <script src="${prefix}/static/public-courses.js"></script>
-      </body>
-    </html>
   `;
 }
 
@@ -199,10 +191,8 @@ async function getCourses() {
 start();
 
 module.exports = {
-  getHtml1,
-  getHtml2,
-  getHtml3,
-  getHtml4,
-  getHtmlFromCourse,
+  generatePageTemplate,
+  generateTableBody,
+  generateCourseSnippet,
   getCourses,
 };
