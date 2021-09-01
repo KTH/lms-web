@@ -145,6 +145,7 @@ async function getCourses() {
   });
 
   function latestTermFirstSort(a, b) {
+    // TODO: This utility function should really have unit tests to document and verify functionality
     if (a.term === NOTERM) {
       return 1;
     }
