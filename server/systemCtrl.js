@@ -29,7 +29,8 @@ async function checkCanvasKey() {
 async function checkCanvasStatus() {
   try {
     const canvasStatus = await fetch(
-      "https://nlxv32btr6v7.statuspage.io/api/v2/status.json"
+      "https://nlxv32btr6v7.statuspage.io/api/v2/status.json",
+      { timeout: 1000 }
     ).json();
     return canvasStatus.status.indicator === "none";
   } catch (e) {
