@@ -16,7 +16,12 @@ require("dotenv-safe").config({ example: ".env.in" });
 const path = require("path");
 const express = require("express");
 const server = require("kth-node-server");
-const publicCourses = require("./server/publicCourses");
+const {
+  generatePageTemplate,
+  generateTableBody,
+  generateCourseSnippet,
+  getCourses,
+} = require("./server/publicCourses");
 const systemCtrl = require("./server/systemCtrl");
 
 const prefix = process.env.PROXY_PREFIX_PATH || "/app/lms-web";
@@ -36,23 +41,26 @@ server.get(prefix, async (req, res) => {
 
   res.status(200);
   res.set("Content-type", "text/html");
-  res.write(publicCourses.getHtml1(req.query.view === "embed", lang));
 
+  // Get and generate course HTML
+  const coursesHtml = [];
   try {
     log.info("Getting courses...");
-    courses = await publicCourses.getCourses();
-    res.write(publicCourses.getHtml2(lang));
+    courses = await getCourses();
 
     log.info("Rendering courses...");
     for (const course of courses) {
-      res.write(publicCourses.getHtmlFromCourse(course));
+      coursesHtml.push(generateCourseSnippet(course));
     }
-    res.write(publicCourses.getHtml3());
   } catch (e) {
     log.error("Error getting or rendering courses", e);
   }
 
-  res.write(publicCourses.getHtml4(req.query.view === "embed", courses));
+  // Create content body
+  const pageContent = generateTableBody(coursesHtml.join("\n"), lang);
+
+  // Create content page
+  res.write(generatePageTemplate(pageContent, courses, lang));
   res.end();
 });
 

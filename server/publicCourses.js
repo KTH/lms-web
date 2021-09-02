@@ -1,6 +1,7 @@
 const log = require("skog");
 const CanvasApi = require("kth-canvas-api");
 const intl = require("./translations");
+const fakeData = require("./fakeData");
 
 const canvasApi = new CanvasApi(
   process.env.CANVAS_ROOT + "/api/v1",
@@ -9,131 +10,18 @@ const canvasApi = new CanvasApi(
 const prefix = process.env.PROXY_PREFIX_PATH || "/app/lms-web";
 
 async function fetchCourses() {
+  // In development we probably want to use fake data to avoid slow import
   if (
     process.env.NODE_ENV === "development" &&
     process.env.USE_FAKE === "true"
   ) {
-    return [
-      {
-        id: 3,
-        sis_course_id: "ExampleHT18",
-        account_id: 14,
-        workflow_state: "available",
-        course_code: "H",
-        is_public: true,
-        name: "Example course I HT18",
-      },
-      {
-        id: 3,
-        sis_course_id: "ExampleVT18",
-        account_id: 14,
-        workflow_state: "available",
-        course_code: "B",
-        is_public: true,
-        name: "Example course II VT18",
-      },
-      {
-        id: 3,
-        sis_course_id: "ExampleHT18",
-        account_id: 24,
-        workflow_state: "available",
-        course_code: "G",
-        is_public: true,
-        name: "Example course III HT18",
-      },
-      {
-        id: 3,
-        sis_course_id: "ExampleHT16",
-        account_id: 24,
-        workflow_state: "available",
-        course_code: "E",
-        is_public: true,
-        name: "Example course IV HT16",
-      },
-      {
-        id: 3,
-        sis_course_id: "Blablablabl",
-        account_id: 67,
-        workflow_state: "available",
-        course_code: "C",
-        is_public: true,
-        name: "Example course nowhere",
-      },
-      {
-        id: 3,
-        sis_course_id: "ExampleVT17",
-        account_id: 27,
-        workflow_state: "available",
-        course_code: "D",
-        is_public: true,
-        name: "Example course V VT17",
-      },
-      {
-        id: 3,
-        sis_course_id: "ExampleHT17",
-        account_id: 29,
-        workflow_state: "available",
-        course_code: "F",
-        is_public: true,
-        name: "Example course VI HT18",
-      },
-      {
-        id: 3,
-        sis_course_id: "ExampleHT18",
-        account_id: 63,
-        workflow_state: "available",
-        course_code: "A",
-        is_public: true,
-        name: "Example course VII HT18",
-      },
-      {
-        id: 3,
-        sis_course_id: "ExampleHT18",
-        account_id: 67,
-        workflow_state: "available",
-        course_code: "C",
-        is_public: true,
-        name: "Example course VIII HT18",
-      },
-      {
-        id: 3,
-        sis_course_id: "ExampleHT19",
-        account_id: 24,
-        workflow_state: "available",
-        course_code: "C",
-        is_public: true,
-        name: "Example course XI HT19",
-      },
-      {
-        id: 3,
-        sis_course_id: "ExampleVT20",
-        account_id: 27,
-        workflow_state: "available",
-        course_code: "C",
-        is_public: true,
-        name: "Example course XII VT20",
-      },
-      {
-        id: 3,
-        sis_course_id: "ExampleHT20",
-        account_id: 29,
-        workflow_state: "available",
-        course_code: "C",
-        is_public: true,
-        name: "Example course XIII HT20",
-      },
-      {
-        id: 3,
-        sis_course_id: "ExampleVT21",
-        account_id: 14,
-        workflow_state: "available",
-        course_code: "C",
-        is_public: true,
-        name: "Example course XIV VT21",
-      },
-    ];
+    log.warn(
+      "Using fake data in development mode. To change don't set USE_FAKE=true"
+    );
+    return fakeData;
   }
 
+  // This is where the import id performed
   try {
     const courses = (await canvasApi.listCourses()).filter(
       (course) => course.sis_course_id
@@ -157,23 +45,7 @@ function start() {
   cache = fetchCourses();
 }
 
-function getHtmlHeader() {
-  return `
-    <div id="header" class="header hasPrimaryHeader">
-      <div id="primaryHeader" class="primaryHeader">
-        <div id="imageLogoBlock">
-          <div class="tlc cid-1_77257 no-categories block figure defaultTheme mainLogo">
-            <div class="imageWrapper">
-              <a href="//kth.se"><img src="//www.kth.se/polopoly_fs/1.77257!/KTH_Logotyp_RGB_2013-2.svg" alt="KTH logo" height="70" width="70"></a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
-}
-
-function getHtml1(embed = false, lang = "en") {
+function generatePageTemplate(contentHtml, courses = [], lang = "en") {
   return `
     <html>
       <head>
@@ -182,17 +54,20 @@ function getHtml1(embed = false, lang = "en") {
         <link rel="stylesheet" href="${prefix}/kth-style/css/kth-bootstrap.css">
         <link rel="stylesheet" href="${prefix}/static/style.css">
       </head>
-      <body class="${embed ? "embedded" : ""}">
-        ${embed ? "" : '<div class="container">'}
-        ${embed ? "" : getHtmlHeader()}
-        ${embed ? "" : '<hr class="header-hr">'}
+      <body class="embedded">
         <div class="loading-bar">
           <div class="bar1"></div>
         </div>
+${contentHtml}
+        <script>document.querySelector('.loading-bar').classList.add('complete')</script>
+        <script>window.courses = ${JSON.stringify(courses)}</script>
+        <script src="${prefix}/static/public-courses.js"></script>
+      </body>
+    </html>
   `;
 }
 
-function getHtml2(lang = "en") {
+function generateTableBody(tableRowsHTML, lang = "en") {
   return `
     <table class="table table-hover">
       <thead>
@@ -211,10 +86,13 @@ function getHtml2(lang = "en") {
         </tr>
       </thead>
       <tbody id="table-body">
+${tableRowsHTML}
+      </tbody>
+    </table>
   `;
 }
 
-function getHtmlFromCourse(course) {
+function generateCourseSnippet(course) {
   return `
     <tr>
       <td>
@@ -225,24 +103,6 @@ function getHtmlFromCourse(course) {
       <td>${course.term}</td>
       <td>${course.visibility}</td>
     </tr>
-  `;
-}
-
-function getHtml3() {
-  return `
-      </tbody>
-    </table>
-  `;
-}
-
-function getHtml4(embed = false, courses = []) {
-  return `
-        ${embed ? "" : "</div>"}
-        <script>document.querySelector('.loading-bar').classList.add('complete')</script>
-        <script>window.courses = ${JSON.stringify(courses)}</script>
-        <script src="${prefix}/static/public-courses.js"></script>
-      </body>
-    </html>
   `;
 }
 
@@ -285,6 +145,7 @@ async function getCourses() {
   });
 
   function latestTermFirstSort(a, b) {
+    // TODO: This utility function should really have unit tests to document and verify functionality
     if (a.term === NOTERM) {
       return 1;
     }
@@ -331,10 +192,8 @@ async function getCourses() {
 start();
 
 module.exports = {
-  getHtml1,
-  getHtml2,
-  getHtml3,
-  getHtml4,
-  getHtmlFromCourse,
+  generatePageTemplate,
+  generateTableBody,
+  generateCourseSnippet,
   getCourses,
 };
