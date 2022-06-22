@@ -129,9 +129,9 @@ async function getCourses() {
     return schools.get(id) || "KTH";
   }
 
-  function parseTerm(sisId) {
+  function parseTerm(name) {
     const regex = /HT\d{2}|VT\d{2}/;
-    const regexMatches = regex.exec(sisId) || [false];
+    const regexMatches = regex.exec(name) || [false];
     return regexMatches[0] || NOTERM;
   }
 
@@ -140,7 +140,7 @@ async function getCourses() {
     name: course.name,
     school: parseSchool(course.account_id),
     course_code: course.course_code,
-    term: parseTerm(course.sis_course_id),
+    term: parseTerm(course.name),
     visibility: course.is_public ? "Public" : "KTH",
   });
 
