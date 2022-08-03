@@ -1,8 +1,7 @@
-const log = require("skog");
+const { default: log, initializeLogger, setFields } = require("skog");
 
-log.init.pino({
-  app: "lms-web",
-});
+initializeLogger();
+setFields({ app: "lms-web" });
 
 process.on("uncaughtException", (err) => {
   log.fatal(err, "Uncaught Exception thrown");

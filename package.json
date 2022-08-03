@@ -30,7 +30,7 @@
     "kth-node-server": "^3.1.2",
     "kth-style": "^7.0.2",
     "pino": "^6.11.2",
-    "skog": "^2.1.0"
+    "skog": "^3.0.2"
   },
   "devDependencies": {
     "@kth/eslint-config-kth": "^1.0.10",

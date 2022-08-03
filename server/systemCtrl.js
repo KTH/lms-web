@@ -3,7 +3,7 @@
  */
 const fetch = require("got");
 const express = require("express");
-const log = require("skog");
+const log = require("skog").default;
 const CanvasApi = require("kth-canvas-api");
 
 const packageFile = require("../package.json");

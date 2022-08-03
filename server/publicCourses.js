@@ -1,4 +1,4 @@
-const log = require("skog");
+const log = require("skog").default;
 const CanvasApi = require("kth-canvas-api");
 const intl = require("./translations");
 const fakeData = require("./fakeData");
