@@ -24,7 +24,7 @@
   "homepage": "https://github.com/KTH/lms-web#readme",
   "dependencies": {
     "dotenv-safe": "^8.2.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "got": "^11.8.2",
     "kth-canvas-api": "^0.15.7",
     "kth-node-server": "^3.1.2",
