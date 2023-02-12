@@ -25,7 +25,7 @@
   "dependencies": {
     "dotenv-safe": "^8.2.0",
     "express": "^4.17.3",
-    "got": "^11.8.2",
+    "got": "^12.5.3",
     "kth-canvas-api": "^0.15.7",
     "kth-node-server": "^3.1.2",
     "kth-style": "^7.0.2",
