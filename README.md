@@ -47,7 +47,7 @@ You can set the following environmental variables to configure more the applicat
 
 - `NODE_ENV`: set to `development` or `production` based on the correct context of deployment (default `production`)
 - `PORT` and `PROXY_PREFIX_PATH` (default `3001` and `/app/lms-web` respectively). Start the app in different port and endpoint. Make sure that `PROXY_PREFIX_PATH` hasn't any trailing slashes.
-- `USE_FAKE`: set to `true` to run with fake data instead of importing from production. Set to `true` by default when running  `npm run dev` or `npm run debug`.
+- `USE_FAKE`: set to `true` to run with fake data instead of importing from production. Set to `true` by default when running `npm run dev` or `npm run debug`.
 
 ## Auto-restart the app
 
