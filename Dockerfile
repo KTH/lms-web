@@ -1,4 +1,4 @@
-FROM node:16-alpine
+FROM kthregistry.azurecr.io/kth-nodejs-16:latest
 
 COPY ["config", "config"]
 
